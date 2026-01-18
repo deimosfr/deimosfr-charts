@@ -2,10 +2,10 @@ apiVersion: v2
 name: mealie
 description: A Helm chart for Kubernetes
 type: application
-version: 3.9.2-1
+version: 3.9.2-2
 appVersion: "v3.9.2"
 home: https://mealie.io/
-icon: https://raw.githubusercontent.com/mealie-recipes/mealie/master/frontend/public/img/icons/android-chrome-512x512.png
+icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/mealie.png
 sources:
   - https://github.com/mealie-recipes/mealie
   - https://github.com/deimosfr/deimosfr-charts

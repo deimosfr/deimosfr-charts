@@ -1,0 +1,221 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Mealie Values",
+  "description": "Values for the Mealie Helm Chart",
+  "type": "object",
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "description": "Number of replicas to run."
+    },
+    "updateStrategy": {
+      "type": "object",
+      "description": "Update strategy for the StatefulSet.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["RollingUpdate", "OnDelete"]
+        }
+      }
+    },
+    "image": {
+      "type": "object",
+      "description": "Image configuration.",
+      "properties": {
+        "repository": {
+          "type": "string"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "enum": ["Always", "Never", "IfNotPresent"]
+        },
+        "tag": {
+          "type": ["string", "null"]
+        }
+      },
+      "required": ["repository", "pullPolicy"]
+    },
+    "imagePullSecrets": {
+      "type": "array",
+      "description": "Secrets for pulling images from a private registry."
+    },
+    "nameOverride": {
+      "type": "string",
+      "description": "Override the chart name."
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "description": "Override the full chart name."
+    },
+    "serviceAccount": {
+      "type": "object",
+      "description": "Service Account configuration.",
+      "properties": {
+        "create": {
+          "type": "boolean"
+        },
+        "automount": {
+          "type": "boolean"
+        },
+        "annotations": {
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "podAnnotations": {
+      "type": "object",
+      "description": "Annotations for the Pod."
+    },
+    "podLabels": {
+      "type": "object",
+      "description": "Labels for the Pod."
+    },
+    "podSecurityContext": {
+      "type": "object",
+      "description": "Security context for the Pod."
+    },
+    "securityContext": {
+      "type": "object",
+      "description": "Security context for the container."
+    },
+    "service": {
+      "type": "object",
+      "description": "Service configuration.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer", "ExternalName"]
+        },
+        "port": {
+          "type": "integer"
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "description": "Ingress configuration.",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "className": {
+          "type": "string"
+        },
+        "annotations": {
+          "type": "object"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "paths": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "pathType": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tls": {
+          "type": "array"
+        }
+      }
+    },
+    "httpRoute": {
+        "type": "object",
+        "description": "Gateway API HTTPRoute configuration.",
+        "properties": {
+            "enabled": { "type": "boolean" },
+            "annotations": { "type": "object" },
+            "parentRefs": { "type": "array" },
+            "hostnames": { "type": "array", "items": { "type": "string" } },
+            "cors": { 
+                "type": "object",
+                "properties": {
+                    "enabled": { "type": "boolean" },
+                    "allowOrigin": { "type": "string" },
+                    "allowMethods": { "type": "string" },
+                    "allowHeaders": { "type": "string" },
+                    "exposeHeaders": { "type": "string" },
+                    "maxAge": { "type": "integer" }
+                }
+            }
+        }
+    },
+    "resources": {
+      "type": "object",
+      "description": "Resource requests and limits."
+    },
+    "livenessProbe": {
+      "type": "object",
+      "description": "Liveness probe configuration."
+    },
+    "readinessProbe": {
+      "type": "object",
+      "description": "Readiness probe configuration."
+    },
+    "volumes": {
+      "type": "array",
+      "description": "Additional volumes."
+    },
+    "volumeMounts": {
+      "type": "array",
+      "description": "Additional volume mounts."
+    },
+    "nodeSelector": {
+      "type": "object",
+      "description": "Node selector configuration."
+    },
+    "tolerations": {
+      "type": "array",
+      "description": "Tolerations configuration."
+    },
+    "affinity": {
+      "type": "object",
+      "description": "Affinity configuration."
+    },
+    "mealie": {
+      "type": "object",
+      "description": "Mealie specific configuration.",
+      "properties": {
+        "secrets": {
+          "type": "object"
+        },
+        "env": {
+          "type": "object"
+        },
+        "vpa": {
+            "type": "object",
+            "properties": {
+                "enabled": { "type": "boolean" }
+            }
+        },
+        "persistence": {
+            "type": "object",
+            "properties": {
+                "enabled": { "type": "boolean" },
+                "size": { "type": "string" },
+                "accessMode": { "type": "string" },
+                "storageClass": { "type": ["string", "null"] }
+            }
+        }
+      }
+    }
+  }
+}

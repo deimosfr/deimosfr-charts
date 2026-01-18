@@ -3,7 +3,22 @@ repos:
     rev: v1.11.0
     hooks:
       - id: helm-docs
+  - repo: local
+    hooks:
+      - id: helm-schema
+        name: Helm Schema Generator
+        entry: ./scripts/helm-schema.sh
+        language: system
+        files: charts/.*/values\.yaml$
   - repo: https://github.com/gruntwork-io/pre-commit
     rev: v0.1.22
     hooks:
       - id: helmlint
+        args: ["--strict"]
+  - repo: local
+    hooks:
+      - id: check-chart-metadata
+        name: Check Chart Metadata (Icon, Verified Publisher)
+        entry: ./scripts/check-chart-metadata.sh
+        language: system
+        files: Chart.yaml

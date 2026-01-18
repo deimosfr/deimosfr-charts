@@ -1,6 +1,6 @@
 # mealie
 
-![Version: 3.9.3](https://img.shields.io/badge/Version-3.9.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.9.2](https://img.shields.io/badge/AppVersion-v3.9.2-informational?style=flat-square)
+![Version: 3.9.2-2](https://img.shields.io/badge/Version-3.9.2--2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.9.2](https://img.shields.io/badge/AppVersion-v3.9.2-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -59,7 +59,11 @@ A Helm chart for Kubernetes
 | persistence.storageClass | string | `nil` |  |
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
-| podSecurityContext | object | `{}` |  |
+| podSecurityContext.fsGroup | int | `2000` |  |
+| podSecurityContext.runAsGroup | int | `1000` |  |
+| podSecurityContext.runAsNonRoot | bool | `true` |  |
+| podSecurityContext.runAsUser | int | `1000` |  |
+| podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | readinessProbe.failureThreshold | int | `3` |  |
 | readinessProbe.httpGet.path | string | `"/"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
@@ -69,7 +73,9 @@ A Helm chart for Kubernetes
 | readinessProbe.timeoutSeconds | int | `5` |  |
 | replicaCount | int | `1` |  |
 | resources | object | `{}` |  |
-| securityContext | object | `{}` |  |
+| securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | service.port | int | `9000` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
