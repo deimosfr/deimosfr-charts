@@ -1,0 +1,9 @@
+# Artifact Hub Repository Metadata
+# See https://artifacthub.io/docs/topics/repositories/artifacthub-repo-yml/
+
+# ID of the repository (optional, if you want verified publisher status)
+# repositoryID: "your-repository-id"
+
+# Ownership claim (optional)
+ownership:
+  github: "deimosfr"

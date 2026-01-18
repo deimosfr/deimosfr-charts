@@ -1,24 +1,27 @@
 apiVersion: v2
 name: mealie
 description: A Helm chart for Kubernetes
-
-# A chart can be either an 'application' or a 'library' chart.
-#
-# Application charts are a collection of templates that can be packaged into versioned archives
-# to be deployed.
-#
-# Library charts provide useful utilities or functions for the chart developer. They're included as
-# a dependency of application charts to inject those utilities and functions into the rendering
-# pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
-
-# This is the chart version. This version number should be incremented each time you make changes
-# to the chart and its templates, including the app version.
-# Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 3.9.2
-
-# This is the version number of the application being deployed. This version number should be
-# incremented each time you make changes to the application. Versions are not expected to
-# follow Semantic Versioning. They should reflect the version the application is using.
-# It is recommended to use it with quotes.
 appVersion: "v3.9.2"
+home: https://mealie.io/
+icon: https://raw.githubusercontent.com/mealie-recipes/mealie/master/frontend/public/img/icons/android-chrome-512x512.png
+sources:
+  - https://github.com/mealie-recipes/mealie
+  - https://github.com/deimosfr/deimosfr-charts
+maintainers:
+  - name: deimosfr
+    email: deimos@deimos.fr
+keywords:
+  - mealie
+  - recipe
+  - manager
+  - self-hosted
+annotations:
+  artifacthub.io/changes: |
+    - kind: added
+      description: Initial chart release
+  artifacthub.io/images: |
+    - name: mealie
+      image: ghcr.io/mealie-recipes/mealie:v3.9.2
+  artifacthub.io/category: "integration-delivery"
