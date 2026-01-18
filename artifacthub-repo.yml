@@ -2,8 +2,8 @@
 # See https://artifacthub.io/docs/topics/repositories/artifacthub-repo-yml/
 
 # ID of the repository (optional, if you want verified publisher status)
-# repositoryID: "your-repository-id"
+repositoryID: "23afb12c-3ce7-4904-b166-62bd1be93aa2"
 
 # Ownership claim (optional)
 ownership:
-  github: "deimosfr"
+  github: "deimos_fr"
