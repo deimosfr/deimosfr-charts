@@ -1,0 +1,50 @@
+name: Check Mealie Version
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get latest Mealie release
+        id: get-latest-release
+        run: |
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/mealie-recipes/mealie/releases/latest | jq -r .tag_name)
+          echo "latest_version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get current chart appVersion
+        id: get-current-version
+        run: |
+          CURRENT_VERSION=$(grep 'appVersion:' charts/mealie/Chart.yaml | awk '{print $2}' | tr -d '"')
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update chart if version changed
+        if: steps.get-latest-release.outputs.latest_version != steps.get-current-version.outputs.current_version
+        run: |
+          LATEST="${{ steps.get-latest-release.outputs.latest_version }}"
+          # Remove 'v' prefix for Chart version
+          VERSION_NO_V="${LATEST#v}"
+
+          # Update Version to match AppVersion exactly
+          sed -i "s/^version: .*/version: $VERSION_NO_V/" charts/mealie/Chart.yaml
+
+          # Update appVersion
+          sed -i "s/^appVersion: .*/appVersion: \"$LATEST\"/" charts/mealie/Chart.yaml
+
+          # Update image tag in values.yaml if it matches the old version or is empty? 
+          # The chart uses appVersion by default so strictly speaking we update Chart.yaml appVersion.
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add charts/mealie/Chart.yaml
+          git commit -m "chore(mealie): bump appVersion to $LATEST"
+          git push
