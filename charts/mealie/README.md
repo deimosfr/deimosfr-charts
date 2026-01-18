@@ -1,52 +1,86 @@
-# Mealie Helm Chart
+# mealie
 
-![Version: 3.9.2](https://img.shields.io/badge/Version-3.9.2-informational?style=flat-square)
-![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
-![AppVersion: v3.9.2](https://img.shields.io/badge/AppVersion-v3.9.2-informational?style=flat-square)
+![Version: 3.9.2](https://img.shields.io/badge/Version-3.9.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.9.2](https://img.shields.io/badge/AppVersion-v3.9.2-informational?style=flat-square)
 
-Mealie is a self-hosted recipe manager and meal planner with a RestAPI backend and a reactive frontend application built in Vue for a pleasant user experience for the whole family.
+A Helm chart for Kubernetes
 
-## Introduction
+**Homepage:** <https://mealie.io/>
 
-This chart bootstraps a [Mealie](https://mealie.io/) deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
+## Maintainers
 
-## Prerequisites
+| Name | Email | Url |
+| ---- | ------ | --- |
+| deimosfr | <deimos@deimos.fr> |  |
 
-- Kubernetes 1.19+
-- Helm 3.2.0+
+## Source Code
 
-## Installing the Chart
-
-To install the chart with the release name `my-release`:
-
-```console
-helm install my-release deimosfr/mealie
-```
-
-## Uninstalling the Chart
-
-To uninstall/delete the `my-release` deployment:
-
-```console
-helm delete my-release
-```
+* <https://github.com/mealie-recipes/mealie>
+* <https://github.com/deimosfr/deimosfr-charts>
 
 ## Configuration
 
-The following table lists the configurable parameters of the Mealie chart and their default values.
+## Values
 
-| Key                 | Type   | Default                           | Description                                |
-| ------------------- | ------ | --------------------------------- | ------------------------------------------ |
-| image.repository    | string | `"ghcr.io/mealie-recipes/mealie"` | Mealie image repository                    |
-| image.tag           | string | `""`                              | Mealie image tag (defaults to AppVersion)  |
-| service.port        | int    | `9000`                            | Kubernetes Service port                    |
-| persistence.enabled | bool   | `true`                            | Enable persistence using PVC               |
-| persistence.size    | string | `"10Gi"`                          | Size of the PVC                            |
-| mealie.env          | object | `{}`                              | Mealie configuration environment variables |
-| mealie.secrets      | object | `{}`                              | Mealie sensitive configuration (secrets)   |
-| updateStrategy.type | string | `"RollingUpdate"`                 | StatefulSet update strategy                |
-
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| affinity | object | `{}` |  |
+| fullnameOverride | string | `""` |  |
+| httpRoute | object | `{"annotations":{},"cors":{"allowHeaders":"DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,User-Agent,Keep-Alive","allowMethods":"GET, POST, OPTIONS, PUT, DELETE","allowOrigin":"*","enabled":true,"exposeHeaders":"Content-Length,Content-Range","maxAge":1728000},"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"gateway","sectionName":"http"}]}` | Expose the service via gateway-api HTTPRoute Requires Gateway API resources and suitable controller installed within the cluster (see: https://gateway-api.sigs.k8s.io/guides/) |
+| image.pullPolicy | string | `"IfNotPresent"` |  |
+| image.repository | string | `"ghcr.io/mealie-recipes/mealie"` |  |
+| image.tag | string | `""` |  |
+| imagePullSecrets | list | `[]` |  |
+| ingress.annotations | object | `{}` |  |
+| ingress.className | string | `""` |  |
+| ingress.enabled | bool | `false` |  |
+| ingress.hosts[0].host | string | `"chart-example.local"` |  |
+| ingress.hosts[0].paths[0].path | string | `"/"` |  |
+| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
+| ingress.tls | list | `[]` |  |
+| livenessProbe.failureThreshold | int | `3` |  |
+| livenessProbe.httpGet.path | string | `"/"` |  |
+| livenessProbe.httpGet.port | string | `"http"` |  |
+| livenessProbe.initialDelaySeconds | int | `30` |  |
+| livenessProbe.periodSeconds | int | `10` |  |
+| livenessProbe.successThreshold | int | `1` |  |
+| livenessProbe.timeoutSeconds | int | `5` |  |
+| mealie.env.ALLOW_SIGNUP | string | `"true"` |  |
+| mealie.env.BASE_URL | string | `"https://mealie.yourdomain.com"` |  |
+| mealie.env.DB_ENGINE | string | `"sqlite"` |  |
+| mealie.env.PGID | string | `"1000"` |  |
+| mealie.env.PUID | string | `"1000"` |  |
+| mealie.env.TZ | string | `"UTC"` |  |
+| mealie.secrets | object | `{}` |  |
+| nameOverride | string | `""` |  |
+| nodeSelector | object | `{}` |  |
+| persistence.accessMode | string | `"ReadWriteOnce"` |  |
+| persistence.enabled | bool | `true` |  |
+| persistence.size | string | `"10Gi"` |  |
+| persistence.storageClass | string | `nil` |  |
+| podAnnotations | object | `{}` |  |
+| podLabels | object | `{}` |  |
+| podSecurityContext | object | `{}` |  |
+| readinessProbe.failureThreshold | int | `3` |  |
+| readinessProbe.httpGet.path | string | `"/"` |  |
+| readinessProbe.httpGet.port | string | `"http"` |  |
+| readinessProbe.initialDelaySeconds | int | `30` |  |
+| readinessProbe.periodSeconds | int | `10` |  |
+| readinessProbe.successThreshold | int | `1` |  |
+| readinessProbe.timeoutSeconds | int | `5` |  |
+| replicaCount | int | `1` |  |
+| resources | object | `{}` |  |
+| securityContext | object | `{}` |  |
+| service.port | int | `9000` |  |
+| service.type | string | `"ClusterIP"` |  |
+| serviceAccount.annotations | object | `{}` |  |
+| serviceAccount.automount | bool | `true` |  |
+| serviceAccount.create | bool | `true` |  |
+| serviceAccount.name | string | `""` |  |
+| tolerations | list | `[]` |  |
+| updateStrategy.type | string | `"RollingUpdate"` |  |
+| volumeMounts | list | `[]` |  |
+| volumes | list | `[]` |  |
+| vpa.enabled | bool | `false` |  |
 
 ## Artifact Hub
 
