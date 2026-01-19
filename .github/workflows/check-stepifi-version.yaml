@@ -1,4 +1,4 @@
-name: Check Mealie Version
+name: Check Stepifi Version
 
 on:
   schedule:
@@ -16,32 +16,33 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get latest Mealie release
+      - name: Get latest Stepifi release
         id: get-latest-release
         run: |
-          LATEST_VERSION=$(curl -s https://api.github.com/repos/mealie-recipes/mealie/releases/latest | jq -r .tag_name)
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/voron69-bit/Stepifi/tags | jq -r '.[0].name')
           echo "latest_version=$LATEST_VERSION" >> $GITHUB_OUTPUT
 
       - name: Get current chart appVersion
         id: get-current-version
         run: |
-          CURRENT_VERSION=$(grep 'appVersion:' charts/mealie/Chart.yaml | awk '{print $2}' | tr -d '"')
+          CURRENT_VERSION=$(grep 'appVersion:' charts/stepifi/Chart.yaml | awk '{print $2}' | tr -d '"')
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
 
       - name: Update chart if version changed
         if: steps.get-latest-release.outputs.latest_version != steps.get-current-version.outputs.current_version
+        id: update-chart
         run: |
           LATEST="${{ steps.get-latest-release.outputs.latest_version }}"
-          # Remove 'v' prefix for Chart version
+          # Remove 'v' prefix if present
           VERSION_NO_V="${LATEST#v}"
 
-          # Update Version to match AppVersion exactly
-          sed -i "s/^version: .*/version: $VERSION_NO_V/" charts/mealie/Chart.yaml
+          # Update Version to match AppVersion exactly or bump patch?
+          # For consistency with other workflows, we'll set version to APP_VERSION
+          sed -i "s/^version: .*/version: $VERSION_NO_V/" charts/stepifi/Chart.yaml
 
           # Update appVersion
-          sed -i "s/^appVersion: .*/appVersion: \"$LATEST\"/" charts/mealie/Chart.yaml
+          sed -i "s/^appVersion: .*/appVersion: \"$VERSION_NO_V\"/" charts/stepifi/Chart.yaml
 
-          echo "latest_version=$LATEST" >> $GITHUB_OUTPUT
           echo "version_no_v=$VERSION_NO_V" >> $GITHUB_OUTPUT
 
       - name: Create Pull Request
@@ -49,14 +50,14 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(mealie): bump appVersion to ${{ steps.get-latest-release.outputs.latest_version }}"
-          branch: chore/mealie-version-bump-${{ steps.get-latest-release.outputs.latest_version }}
+          commit-message: "chore(stepifi): bump appVersion to ${{ steps.update-chart.outputs.version_no_v }}"
+          branch: chore/stepifi-version-bump-${{ steps.update-chart.outputs.version_no_v }}
           delete-branch: true
-          title: "chore(mealie): bump appVersion to ${{ steps.get-latest-release.outputs.latest_version }}"
+          title: "chore(stepifi): bump appVersion to ${{ steps.update-chart.outputs.version_no_v }}"
           body: |
-            Bumps Mealie appVersion to `${{ steps.get-latest-release.outputs.latest_version }}`.
+            Bumps Stepifi appVersion to `${{ steps.update-chart.outputs.version_no_v }}`.
             
-            Upstream Release: https://github.com/mealie-recipes/mealie/releases/tag/${{ steps.get-latest-release.outputs.latest_version }}
+            Upstream Release: https://github.com/voron69-bit/Stepifi/releases/tag/${{ steps.get-latest-release.outputs.latest_version }}
           labels: |
             automation
             dependencies

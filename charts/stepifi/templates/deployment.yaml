@@ -1,19 +1,19 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: {{ include "mealie.fullname" . }}
+  name: {{ include "stepifi.fullname" . }}
+  annotations:
+    ignore-check.kube-linter.io/no-read-only-root-fs: "App writes to root filesystem temp dirs"
   labels:
-    {{- include "mealie.labels" . | nindent 4 }}
+    {{- include "stepifi.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "mealie.fullname" . }}
-  replicas: {{ .Values.replicaCount }}
-  {{- with .Values.updateStrategy }}
-  updateStrategy:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+  # Autoscaling logic could be added here if needed, via HPA
+  replicas: {{ .Values.replicaCount | default 1 }}
+  strategy:
+    {{- toYaml .Values.strategy | nindent 4 }}
   selector:
     matchLabels:
-      {{- include "mealie.selectorLabels" . | nindent 6 }}
+      {{- include "stepifi.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -21,14 +21,14 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "mealie.selectorLabels" . | nindent 8 }}
+        {{- include "stepifi.selectorLabels" . | nindent 8 }}
     spec:
       restartPolicy: Always
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "mealie.serviceAccountName" . }}
+      serviceAccountName: {{ include "stepifi.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -39,31 +39,39 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 9000
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
+            - name: bull-board
+              containerPort: {{ .Values.service.bullBoardPort }}
+              protocol: TCP
+          env:
+
+            # Standard env vars from values.yaml
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          envFrom:
-            - configMapRef:
-                name: {{ include "mealie.fullname" . }}
-            - secretRef:
-                name: {{ include "mealie.fullname" . }}
           volumeMounts:
             {{- if .Values.persistence.enabled }}
             - name: data
-              mountPath: /app/data
+              mountPath: /app/uploads
+              subPath: uploads
+            - name: data
+              mountPath: /app/converted
+              subPath: converted
             {{- end }}
-            {{- with .Values.volumeMounts }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
-      {{- with .Values.volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- if .Values.persistence.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "stepifi.fullname" .) }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -76,17 +84,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  {{- if .Values.persistence.enabled }}
-  volumeClaimTemplates:
-  - metadata:
-      name: data
-    spec:
-      accessModes:
-        - {{ .Values.persistence.accessMode | quote }}
-      resources:
-        requests:
-          storage: {{ .Values.persistence.size | quote }}
-      {{- if .Values.persistence.storageClass }}
-      storageClassName: {{ .Values.persistence.storageClass | quote }}
-      {{- end }}
-  {{- end }}

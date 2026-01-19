@@ -1,0 +1,13 @@
+checks:
+  addAllBuiltIn: true
+  exclude:
+    - sorted-keys
+    - use-namespace
+    - required-annotation-email
+    - required-label-owner
+    - non-isolated-pod
+    - minimum-three-replicas
+    - no-node-affinity
+    - dnsconfig-options
+    - unset-cpu-requirements
+    - unset-memory-requirements

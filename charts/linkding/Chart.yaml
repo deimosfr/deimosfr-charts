@@ -1,0 +1,16 @@
+apiVersion: v2
+appVersion: 1.35.0
+description: A Helm chart for Linkding, a self-hosted bookmark manager.
+name: linkding
+type: application
+version: 0.1.0
+annotations:
+  artifacthub.io/changes: |
+    - kind: added
+      description: Initial release
+  artifacthub.io/category: productivity
+  artifacthub.io/images: |
+    - name: linkding
+      image: sissbruecker/linkding:1.35.0
+  artifacthub.io/verifiedPublisher: "true"
+icon: https://github.com/sissbruecker.png
