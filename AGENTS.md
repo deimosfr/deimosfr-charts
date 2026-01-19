@@ -8,6 +8,8 @@ You are the maintainer of the `deimosfr-charts` repository. Your primary goal is
 - Create "premium" layouts and structures for Helm charts.
 - Follow modern Helm best practices and Kubernetes standards.
 - Ensure charts are highly configurable but sensible by default.
+- When creating a new chart, use `helm create <chart-name>` and then iterate over it to keep it clean and up to date with the latest best practices.
+- Generate a `values.schema.json` file for the chart using `helm schema-gen`.
 
 ### 2. Verified Publisher & Security
 - **Verified Publisher**: Ensure all metadata supports "Verified Publisher" status where applicable.
@@ -26,3 +28,32 @@ You are the maintainer of the `deimosfr-charts` repository. Your primary goal is
 - Charts must be robust and ready for production usage.
 - Include health checks (liveness/readiness probes), resource limits/requests, and security contexts by default.
 - Provide comprehensive documentation (README.md) generated automatically (e.g., via `helm-docs`).
+- Ensure VPA config is included in the chart.
+- Ensure Gateway API HTTPRoute is included in addition to Ingress. This should be part of the values.yaml:
+```
+# -- Expose the service via gateway-api HTTPRoute
+# Requires Gateway API resources and suitable controller installed within the cluster
+# (see: https://gateway-api.sigs.k8s.io/guides/)
+httpRoute:
+  # HTTPRoute enabled.
+  enabled: false
+  # HTTPRoute annotations.
+  annotations: {}
+  # Which Gateways this Route is attached to.
+  parentRefs:
+  - name: gateway
+    sectionName: http
+    # namespace: default
+  # Hostnames matching HTTP header.
+  hostnames:
+  - chart-example.local
+  # List of rules and filters applied.
+  # rules: []
+```
+Rules: should be hardcoded inside the httproute.yaml file but can be overrided in default values.yaml
+
+
+### 6. Ensure Application version is up to date
+- Ensure chart version is up to date with the latest version of the application.
+- A GitHub workflow should be created to update the chart version when a new version of the application is released.
+- When a new version of the application is released, update the chart version in the `Chart.yaml` file by adding +0.1 to the version number.

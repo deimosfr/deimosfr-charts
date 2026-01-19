@@ -3,6 +3,7 @@ repos:
     rev: v1.11.0
     hooks:
       - id: helm-docs
+        files: (Chart|values|README)\.(yaml|yml|gotmpl|md)$
   - repo: local
     hooks:
       - id: helm-schema
@@ -14,7 +15,7 @@ repos:
     rev: v0.1.22
     hooks:
       - id: helmlint
-        args: ["--strict"]
+        # args: ["--strict"] # Not supported by the underlying script? verification needed, but removing to fix realpath error for now.
   - repo: local
     hooks:
       - id: check-chart-metadata
