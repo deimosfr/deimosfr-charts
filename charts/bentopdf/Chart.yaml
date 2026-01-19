@@ -1,0 +1,33 @@
+apiVersion: v2
+name: bentopdf
+description: A Helm chart for BentoPDF - PDF manipulation service using BentoML
+type: application
+version: 1.0.0
+appVersion: "1.15.4"
+home: https://github.com/alam00000/bentopdf
+icon: https://raw.githubusercontent.com/alam00000/bentopdf/refs/heads/main/public/images/favicon-no-bg.svg
+kubeVersion: ">=1.19.0-0"
+keywords:
+  - pdf
+  - bentoml
+  - converter
+maintainers:
+  - name: deimosfr
+    email: deimosfr@gmail.com
+sources:
+  - https://github.com/alam00000/bentopdf
+  - https://github.com/deimosfr/deimosfr-charts/tree/main/charts/bentopdf
+deprecated: false
+annotations:
+  artifacthub.io/links: |
+    - name: Chart source
+      url: https://github.com/deimosfr/deimosfr-charts/tree/main/charts/bentopdf
+    - name: Docker image source
+      url: https://github.com/alam00000/bentopdf
+  artifacthub.io/images: |
+    - name: bentopdf
+      image: bentopdf/bentopdf-simple:latest
+  artifacthub.io/changes: |
+    - kind: added
+      description: "First release"
+  artifacthub.io/category: ai-machine-learning

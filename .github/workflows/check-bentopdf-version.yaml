@@ -1,4 +1,4 @@
-name: Check Mealie Version
+name: Check BentoPDF Version
 
 on:
   schedule:
@@ -16,30 +16,34 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get latest Mealie release
+      - name: Get latest BentoPDF release
         id: get-latest-release
         run: |
-          LATEST_VERSION=$(curl -s https://api.github.com/repos/mealie-recipes/mealie/releases/latest | jq -r .tag_name)
+          # Use GitHub API to get the latest release tag
+          # Assuming the repo is alam00000/bentopdf
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/alam00000/bentopdf/tags | jq -r '.[0].name')
           echo "latest_version=$LATEST_VERSION" >> $GITHUB_OUTPUT
 
       - name: Get current chart appVersion
         id: get-current-version
         run: |
-          CURRENT_VERSION=$(grep 'appVersion:' charts/mealie/Chart.yaml | awk '{print $2}' | tr -d '"')
+          CURRENT_VERSION=$(grep 'appVersion:' charts/bentopdf/Chart.yaml | awk '{print $2}' | tr -d '"')
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
 
       - name: Update chart if version changed
         if: steps.get-latest-release.outputs.latest_version != steps.get-current-version.outputs.current_version
+        id: update-chart
         run: |
           LATEST="${{ steps.get-latest-release.outputs.latest_version }}"
-          # Remove 'v' prefix for Chart version
+          # Remove 'v' prefix if present depending on how the tag is formatted. 
+          # The current chart version is 1.16.0 without v. Tags might have v.
           VERSION_NO_V="${LATEST#v}"
 
-          # Update Version to match AppVersion exactly
-          sed -i "s/^version: .*/version: $VERSION_NO_V/" charts/mealie/Chart.yaml
+          # Update Version to match AppVersion exactly (or bump patch/minor as needed)
+          sed -i "s/^version: .*/version: $VERSION_NO_V/" charts/bentopdf/Chart.yaml
 
           # Update appVersion
-          sed -i "s/^appVersion: .*/appVersion: \"$LATEST\"/" charts/mealie/Chart.yaml
+          sed -i "s/^appVersion: .*/appVersion: \"$VERSION_NO_V\"/" charts/bentopdf/Chart.yaml
 
           echo "latest_version=$LATEST" >> $GITHUB_OUTPUT
           echo "version_no_v=$VERSION_NO_V" >> $GITHUB_OUTPUT
@@ -49,14 +53,15 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(mealie): bump appVersion to ${{ steps.get-latest-release.outputs.latest_version }}"
-          branch: chore/mealie-version-bump-${{ steps.get-latest-release.outputs.latest_version }}
+          commit-message: "chore(bentopdf): bump appVersion to ${{ steps.update-chart.outputs.version_no_v }}"
+          branch: chore/bentopdf-version-bump-${{ steps.update-chart.outputs.version_no_v }}
           delete-branch: true
-          title: "chore(mealie): bump appVersion to ${{ steps.get-latest-release.outputs.latest_version }}"
+          title: "chore(bentopdf): bump appVersion to ${{ steps.update-chart.outputs.version_no_v }}"
           body: |
-            Bumps Mealie appVersion to `${{ steps.get-latest-release.outputs.latest_version }}`.
+            Bumps BentoPDF appVersion to `${{ steps.update-chart.outputs.version_no_v }}`.
             
-            Upstream Release: https://github.com/mealie-recipes/mealie/releases/tag/${{ steps.get-latest-release.outputs.latest_version }}
+            Upstream Release: https://github.com/alam00000/bentopdf/tags
+            (Exact release link might vary as tags are used)
           labels: |
             automation
             dependencies

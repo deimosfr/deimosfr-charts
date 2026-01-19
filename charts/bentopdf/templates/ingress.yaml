@@ -1,0 +1,34 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "bentopdf.fullname" . }}-ingress
+  labels:
+    name: {{ include "bentopdf.fullname" . }}-ingress
+    {{- include "bentopdf.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+{{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+{{- end }}
+  rules:
+  - host: {{ trimPrefix "http://" (trimPrefix "https://" .Values.ingress.url) }}
+    http:
+      paths:
+      - path: '/'
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "bentopdf.fullname" . }}
+            port:
+              number: {{ .Values.service.port }}
+{{- if .Values.ingress.tls.enabled }}
+  tls:
+  - hosts:
+    - {{ trimPrefix "http://" (trimPrefix "https://" .Values.ingress.url) }}
+    secretName: {{ .Values.ingress.tls.secretName | default (printf "%s-ingress-lets-encrypt" (include "bentopdf.fullname" .)) }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,36 @@
+apiVersion: v2
+name: stepifi
+description: A Helm chart for Stepifi - STL to STEP converter
+type: application
+version: 1.0.0
+appVersion: "2.0.0"
+home: https://github.com/voron69-bit/Stepifi
+icon: https://raw.githubusercontent.com/voron69-bit/Stepifi/main/public/favicon.ico
+kubeVersion: ">=1.19.0-0"
+keywords:
+  - stepifi
+  - 3d-printing
+  - cad
+  - converter
+  - stl
+  - step
+maintainers:
+  - name: deimosfr
+    email: deimosfr@gmail.com
+sources:
+  - https://github.com/voron69-bit/Stepifi
+  - https://github.com/deimosfr/deimosfr-charts/tree/main/charts/stepifi
+
+annotations:
+  artifacthub.io/links: |
+    - name: Chart source
+      url: https://github.com/deimosfr/deimosfr-charts/tree/main/charts/stepifi
+    - name: Docker image source
+      url: https://github.com/voron69-bit/Stepifi
+  artifacthub.io/images: |
+    - name: stepifi
+      image: idocker1688/stepifi:2.0.0
+  artifacthub.io/changes: |
+    - kind: added
+      description: "Initial chart release for Stepifi v2.0.0"
+  artifacthub.io/category: engineering
