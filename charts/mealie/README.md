@@ -56,7 +56,7 @@ A Helm chart for Kubernetes
 | persistence.accessMode | string | `"ReadWriteOnce"` |  |
 | persistence.enabled | bool | `true` |  |
 | persistence.size | string | `"10Gi"` |  |
-| persistence.storageClass | string | `nil` |  |
+| persistence.storageClass | string | `""` |  |
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
 | podSecurityContext.fsGroup | int | `2000` |  |
