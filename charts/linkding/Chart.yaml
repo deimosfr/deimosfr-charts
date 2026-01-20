@@ -13,4 +13,4 @@ annotations:
     - name: linkding
       image: sissbruecker/linkding:1.35.0
   artifacthub.io/verifiedPublisher: "true"
-icon: https://github.com/sissbruecker.png
+icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/linkding.png
