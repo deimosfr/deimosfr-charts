@@ -5,7 +5,7 @@ type: application
 version: 1.0.0
 appVersion: "2.0.0"
 home: https://github.com/voron69-bit/Stepifi
-icon: https://raw.githubusercontent.com/voron69-bit/Stepifi/main/public/favicon.ico
+icon: https://github.com/voron69-bit.png
 kubeVersion: ">=1.19.0-0"
 keywords:
   - stepifi
@@ -33,4 +33,4 @@ annotations:
   artifacthub.io/changes: |
     - kind: added
       description: "Initial chart release for Stepifi v2.0.0"
-  artifacthub.io/category: engineering
+  artifacthub.io/category: integration-delivery

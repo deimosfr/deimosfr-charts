@@ -30,4 +30,4 @@ annotations:
   artifacthub.io/changes: |
     - kind: added
       description: "First release"
-  artifacthub.io/category: ai-machine-learning
+  artifacthub.io/category: integration-delivery
