@@ -1,3 +1,133 @@
 apiVersion: v1
-entries: {}
-generated: "2026-01-20T12:19:09.062993+01:00"
+entries:
+  bentopdf:
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/changes: |
+        - kind: added
+          description: "First release"
+      artifacthub.io/images: |
+        - name: bentopdf
+          image: bentopdf/bentopdf-simple:latest
+      artifacthub.io/links: |
+        - name: Chart source
+          url: https://github.com/deimosfr/deimosfr-charts/tree/main/charts/bentopdf
+        - name: Docker image source
+          url: https://github.com/alam00000/bentopdf
+    apiVersion: v2
+    appVersion: 1.15.4
+    created: "2026-01-20T12:30:34.082088086Z"
+    description: A Helm chart for BentoPDF - PDF manipulation service using BentoML
+    digest: 96e02c326f9cffaa040a7ec8307502174b0d0a5f1c2ba93c6c131731a2772a09
+    home: https://github.com/alam00000/bentopdf
+    icon: https://raw.githubusercontent.com/alam00000/bentopdf/refs/heads/main/public/images/favicon-no-bg.svg
+    keywords:
+    - pdf
+    - bentoml
+    - converter
+    kubeVersion: '>=1.19.0-0'
+    maintainers:
+    - email: deimosfr@gmail.com
+      name: deimosfr
+    name: bentopdf
+    sources:
+    - https://github.com/alam00000/bentopdf
+    - https://github.com/deimosfr/deimosfr-charts/tree/main/charts/bentopdf
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/bentopdf-1.0.2/bentopdf-1.0.2.tgz
+    version: 1.0.2
+  linkding:
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/changes: |
+        - kind: added
+          description: Initial release
+      artifacthub.io/images: |
+        - name: linkding
+          image: sissbruecker/linkding:1.35.0
+      artifacthub.io/verifiedPublisher: "true"
+    apiVersion: v2
+    appVersion: 1.35.0
+    created: "2026-01-20T12:30:34.368466333Z"
+    description: A Helm chart for Linkding, a self-hosted bookmark manager.
+    digest: cf12c7767717cb0ec5b2baf39fc5908e26d08c831b57c0e89fdc6a06cf678eeb
+    icon: https://github.com/sissbruecker.png
+    name: linkding
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/linkding-1.0.2/linkding-1.0.2.tgz
+    version: 1.0.2
+  mealie:
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/changes: |
+        - kind: added
+          description: Initial chart release
+      artifacthub.io/images: |
+        - name: mealie
+          image: ghcr.io/mealie-recipes/mealie:v3.9.2
+    apiVersion: v2
+    appVersion: v3.9.2
+    created: "2026-01-20T12:30:34.545053064Z"
+    description: A Helm chart for Kubernetes
+    digest: caf5db00affa09cbc1fe50033263dcadd5ea1f0c5e8750c5035001c81f63654b
+    home: https://mealie.io/
+    icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/mealie.png
+    keywords:
+    - mealie
+    - recipe
+    - manager
+    - self-hosted
+    maintainers:
+    - email: deimosfr@gmail.com
+      name: deimosfr
+    name: mealie
+    sources:
+    - https://github.com/mealie-recipes/mealie
+    - https://github.com/deimosfr/deimosfr-charts
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/mealie-1.0.2/mealie-1.0.2.tgz
+    version: 1.0.2
+  stepifi:
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/changes: |
+        - kind: added
+          description: "Initial chart release for Stepifi v2.0.0"
+      artifacthub.io/images: |
+        - name: stepifi
+          image: idocker1688/stepifi:2.0.0
+      artifacthub.io/links: |
+        - name: Chart source
+          url: https://github.com/deimosfr/deimosfr-charts/tree/main/charts/stepifi
+        - name: Docker image source
+          url: https://github.com/voron69-bit/Stepifi
+    apiVersion: v2
+    appVersion: 2.0.0
+    created: "2026-01-20T12:30:34.706976991Z"
+    description: A Helm chart for Stepifi - STL to STEP converter
+    digest: a3b953f9b8e5fed50aa1ecfea45c126b6317675f505f76e1e00f17a624402ee3
+    home: https://github.com/voron69-bit/Stepifi
+    icon: https://github.com/voron69-bit.png
+    keywords:
+    - stepifi
+    - 3d-printing
+    - cad
+    - converter
+    - stl
+    - step
+    kubeVersion: '>=1.19.0-0'
+    maintainers:
+    - email: deimosfr@gmail.com
+      name: deimosfr
+    name: stepifi
+    sources:
+    - https://github.com/voron69-bit/Stepifi
+    - https://github.com/deimosfr/deimosfr-charts/tree/main/charts/stepifi
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/stepifi-1.0.2/stepifi-1.0.2.tgz
+    version: 1.0.2
+generated: "2026-01-20T12:30:34.706985931Z"
