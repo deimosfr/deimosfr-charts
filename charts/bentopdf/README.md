@@ -27,6 +27,7 @@ Kubernetes: `>=1.19.0-0`
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| affinity | object | `{}` | Affinity for pod assignment |
 | config.logLevel | string | `"INFO"` | Log level: DEBUG, INFO, WARNING, ERROR |
 | config.workers | int | `1` | Number of workers |
 | fullnameOverride | string | `""` | String to fully override bentopdf.fullname template |
@@ -49,6 +50,7 @@ Kubernetes: `>=1.19.0-0`
 | livenessProbe.periodSeconds | int | `10` |  |
 | livenessProbe.timeoutSeconds | int | `5` |  |
 | nameOverride | string | `""` | String to partially override bentopdf.fullname template |
+| nodeSelector | object | `{}` | Node selector for pod assignment |
 | persistence.accessMode | string | `"ReadWriteOnce"` | Access mode for the persistent volume |
 | persistence.enabled | bool | `false` | Enable persistent storage |
 | persistence.existingClaim | string | "" | Use an existing PVC |
@@ -81,6 +83,7 @@ Kubernetes: `>=1.19.0-0`
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | "" | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | strategy | object | `{"type":"RollingUpdate"}` | Deployment strategy |
+| tolerations | list | `[]` | Tolerations for pod assignment |
 | vpa | object | `{"enabled":false,"resourcePolicy":{},"updatePolicy":{"updateMode":"Auto"}}` | Vertical Pod Autoscaler configuration |
 | vpa.enabled | bool | `false` | Enable Vertical Pod Autoscaler |
 | vpa.resourcePolicy | object | `{}` | Resource policy for VPA |
