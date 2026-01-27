@@ -121,6 +121,26 @@ entries:
       artifacthub.io/verifiedPublisher: "true"
     apiVersion: v2
     appVersion: 1.35.0
+    created: "2026-01-27T14:53:08.186718304Z"
+    description: A Helm chart for Linkding, a self-hosted bookmark manager.
+    digest: 67859e055fdb260ffab1827c3650e834707adaed095077cd46d1d0b086638a9c
+    icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/linkding.png
+    name: linkding
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/linkding-1.0.3/linkding-1.0.3.tgz
+    version: 1.0.3
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/changes: |
+        - kind: added
+          description: Initial release
+      artifacthub.io/images: |
+        - name: linkding
+          image: sissbruecker/linkding:1.35.0
+      artifacthub.io/verifiedPublisher: "true"
+    apiVersion: v2
+    appVersion: 1.35.0
     created: "2026-01-20T12:30:34.368466333Z"
     description: A Helm chart for Linkding, a self-hosted bookmark manager.
     digest: cf12c7767717cb0ec5b2baf39fc5908e26d08c831b57c0e89fdc6a06cf678eeb
@@ -202,4 +222,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/stepifi-1.0.2/stepifi-1.0.2.tgz
     version: 1.0.2
-generated: "2026-01-27T14:19:58.268665237Z"
+generated: "2026-01-27T14:53:08.186732481Z"
