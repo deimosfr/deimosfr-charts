@@ -39,8 +39,19 @@ jobs:
           # The current chart version is 1.16.0 without v. Tags might have v.
           VERSION_NO_V="${LATEST#v}"
 
-          # Update Version to match AppVersion exactly (or bump patch/minor as needed)
-          sed -i "s/^version: .*/version: $VERSION_NO_V/" charts/bentopdf/Chart.yaml
+          # Get current chart version
+          CURRENT_CHART_VERSION=$(grep '^version:' charts/bentopdf/Chart.yaml | awk '{print $2}')
+
+          # Increment patch version
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_CHART_VERSION"
+          MAJOR="${VERSION_PARTS[0]}"
+          MINOR="${VERSION_PARTS[1]}"
+          PATCH="${VERSION_PARTS[2]}"
+          NEW_PATCH=$((PATCH + 1))
+          NEW_CHART_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+
+          # Update Chart Version
+          sed -i "s/^version: .*/version: $NEW_CHART_VERSION/" charts/bentopdf/Chart.yaml
 
           # Update appVersion
           sed -i "s/^appVersion: .*/appVersion: \"$VERSION_NO_V\"/" charts/bentopdf/Chart.yaml

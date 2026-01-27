@@ -36,9 +36,19 @@ jobs:
           # Remove 'v' prefix if present
           VERSION_NO_V="${LATEST#v}"
 
-          # Update Version to match AppVersion exactly or bump patch?
-          # For consistency with other workflows, we'll set version to APP_VERSION
-          sed -i "s/^version: .*/version: $VERSION_NO_V/" charts/stepifi/Chart.yaml
+          # Get current chart version
+          CURRENT_CHART_VERSION=$(grep '^version:' charts/stepifi/Chart.yaml | awk '{print $2}')
+          
+          # Increment patch version
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_CHART_VERSION"
+          MAJOR="${VERSION_PARTS[0]}"
+          MINOR="${VERSION_PARTS[1]}"
+          PATCH="${VERSION_PARTS[2]}"
+          NEW_PATCH=$((PATCH + 1))
+          NEW_CHART_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+
+          # Update Chart Version
+          sed -i "s/^version: .*/version: $NEW_CHART_VERSION/" charts/stepifi/Chart.yaml
 
           # Update appVersion
           sed -i "s/^appVersion: .*/appVersion: \"$VERSION_NO_V\"/" charts/stepifi/Chart.yaml
