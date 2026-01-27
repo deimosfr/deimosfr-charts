@@ -1,6 +1,6 @@
 # linkding
 
-![Version: 1.0.2](https://img.shields.io/badge/Version-1.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.35.0](https://img.shields.io/badge/AppVersion-1.35.0-informational?style=flat-square)
+![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.35.0](https://img.shields.io/badge/AppVersion-1.35.0-informational?style=flat-square)
 
 A Helm chart for Linkding, a self-hosted bookmark manager.
 
@@ -9,7 +9,7 @@ A Helm chart for Linkding, a self-hosted bookmark manager.
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| env | string | `nil` | OIDC options LD_OIDC_CLIENT_SECRET: "" |
+| env | object | `{}` |  |
 | fullnameOverride | string | `""` |  |
 | httpRoute | object | `{"annotations":{},"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"gateway","sectionName":"http"}]}` | Expose the service via gateway-api HTTPRoute Requires Gateway API resources and suitable controller installed within the cluster (see: https://gateway-api.sigs.k8s.io/guides/) |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
@@ -27,14 +27,18 @@ A Helm chart for Linkding, a self-hosted bookmark manager.
 | livenessProbe.httpGet.port | string | `"http"` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
-| persistence | object | `{"accessModes":["ReadWriteOnce"],"annotations":{},"enabled":false,"mountPath":"/etc/linkding/data","size":"1Gi"}` | OIDC options LD_OIDC_ENABLE: "False" LD_OIDC_DISCOVERY_ENDPOINT: "" LD_OIDC_CLIENT_ID: "" LD_OIDC_SCOPES: "openid email profile" |
+| persistence.accessModes[0] | string | `"ReadWriteOnce"` |  |
+| persistence.annotations | object | `{}` |  |
+| persistence.enabled | bool | `false` |  |
+| persistence.mountPath | string | `"/etc/linkding/data"` |  |
+| persistence.size | string | `"1Gi"` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
 | readinessProbe.httpGet.path | string | `"/"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
 | replicaCount | int | `1` |  |
 | resources | object | `{}` |  |
-| secrets | string | `nil` |  |
+| secrets | object | `{}` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `1000` |  |

@@ -101,7 +101,7 @@ resources: {}
 
 # Secrets (will be mounted as environment variables from a Secret)
 # Use this for sensitive data like passwords, API keys, etc.
-secrets:
+secrets: {}
   # -- Create a superuser on startup
   # LD_SUPERUSER_NAME: ""
   # LD_SUPERUSER_PASSWORD: ""
@@ -110,7 +110,7 @@ secrets:
   # -- OIDC options
   # LD_OIDC_CLIENT_SECRET: ""
 
-env:
+env: {}
   # -- Disable registration
   # LD_DISABLE_REGISTRATION: "False"
   # -- Disable background tasks

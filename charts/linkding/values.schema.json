@@ -6,7 +6,7 @@
             "type": "object"
         },
         "env": {
-            "type": "null"
+            "type": "object"
         },
         "fullnameOverride": {
             "type": "string"
@@ -175,7 +175,7 @@
             "type": "object"
         },
         "secrets": {
-            "type": "null"
+            "type": "object"
         },
         "securityContext": {
             "type": "object",
