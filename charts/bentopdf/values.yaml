@@ -11,7 +11,7 @@ strategy:
 
 image:
   # -- Docker image repository for BentoPDF (uses nginx-unprivileged for enhanced security)
-  repository: bentopdf/bentopdf-simple
+  repository: bentopdfteam/bentopdf
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion

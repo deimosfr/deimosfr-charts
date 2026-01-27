@@ -1,6 +1,6 @@
 # bentopdf
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.15.4](https://img.shields.io/badge/AppVersion-1.15.4-informational?style=flat-square)
+![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.15.4](https://img.shields.io/badge/AppVersion-1.15.4-informational?style=flat-square)
 
 A Helm chart for BentoPDF - PDF manipulation service using BentoML
 
@@ -32,7 +32,7 @@ Kubernetes: `>=1.19.0-0`
 | fullnameOverride | string | `""` | String to fully override bentopdf.fullname template |
 | httpRoute | object | `{"annotations":{},"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"gateway","sectionName":"http"}]}` | Expose the service via gateway-api HTTPRoute Requires Gateway API resources and suitable controller installed within the cluster (see: https://gateway-api.sigs.k8s.io/guides/) |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| image.repository | string | `"bentopdf/bentopdf-simple"` | Docker image repository for BentoPDF (uses nginx-unprivileged for enhanced security) |
+| image.repository | string | `"bentopdfteam/bentopdf"` | Docker image repository for BentoPDF (uses nginx-unprivileged for enhanced security) |
 | image.tag | string | "" | Overrides the image tag whose default is the chart appVersion |
 | imagePullSecrets | list | `[]` | Image pull secrets for private Docker registry |
 | ingress.annotations | object | `{}` | Additional ingress annotations @example annotations:   cert-manager.io/cluster-issuer: letsencrypt-prod |
