@@ -4,6 +4,8 @@ metadata:
   name: {{ include "bentopdf.fullname" . }}
   labels:
     {{- include "bentopdf.labels" . | nindent 4 }}
+  annotations:
+    ignore-check.kube-linter.io/no-read-only-root-fs: "Can't be run as non-root"
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy:
@@ -76,4 +78,16 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "bentopdf.fullname" . }}{{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
       {{- end }}

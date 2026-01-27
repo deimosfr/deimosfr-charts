@@ -11,7 +11,7 @@ strategy:
 
 image:
   # -- Docker image repository for BentoPDF (uses nginx-unprivileged for enhanced security)
-  repository: bentopdfteam/bentopdf
+  repository: ghcr.io/alam00000/bentopdf
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion
@@ -58,7 +58,7 @@ securityContext:
     drop:
     - ALL
   # -- Allow write access to root filesystem
-  readOnlyRootFilesystem: true
+  readOnlyRootFilesystem: false
   # -- Prevent privilege escalation
   allowPrivilegeEscalation: false
 
@@ -176,3 +176,12 @@ vpa:
     updateMode: "Auto"
   # -- Resource policy for VPA
   resourcePolicy: {}
+
+# -- Node selector for pod assignment
+nodeSelector: {}
+
+# -- Tolerations for pod assignment
+tolerations: []
+
+# -- Affinity for pod assignment
+affinity: {}

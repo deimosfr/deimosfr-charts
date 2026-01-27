@@ -2,6 +2,9 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "properties": {
+        "affinity": {
+            "type": "object"
+        },
         "config": {
             "type": "object",
             "properties": {
@@ -125,6 +128,9 @@
         },
         "nameOverride": {
             "type": "string"
+        },
+        "nodeSelector": {
+            "type": "object"
         },
         "persistence": {
             "type": "object",
@@ -293,6 +299,9 @@
                     "type": "string"
                 }
             }
+        },
+        "tolerations": {
+            "type": "array"
         },
         "vpa": {
             "type": "object",

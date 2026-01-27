@@ -1,6 +1,6 @@
 # bentopdf
 
-![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.15.4](https://img.shields.io/badge/AppVersion-1.15.4-informational?style=flat-square)
+![Version: 1.0.4](https://img.shields.io/badge/Version-1.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.16.1](https://img.shields.io/badge/AppVersion-1.16.1-informational?style=flat-square)
 
 A Helm chart for BentoPDF - PDF manipulation service using BentoML
 
@@ -27,12 +27,13 @@ Kubernetes: `>=1.19.0-0`
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| affinity | object | `{}` | Affinity for pod assignment |
 | config.logLevel | string | `"INFO"` | Log level: DEBUG, INFO, WARNING, ERROR |
 | config.workers | int | `1` | Number of workers |
 | fullnameOverride | string | `""` | String to fully override bentopdf.fullname template |
 | httpRoute | object | `{"annotations":{},"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"gateway","sectionName":"http"}]}` | Expose the service via gateway-api HTTPRoute Requires Gateway API resources and suitable controller installed within the cluster (see: https://gateway-api.sigs.k8s.io/guides/) |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| image.repository | string | `"bentopdfteam/bentopdf"` | Docker image repository for BentoPDF (uses nginx-unprivileged for enhanced security) |
+| image.repository | string | `"ghcr.io/alam00000/bentopdf"` | Docker image repository for BentoPDF (uses nginx-unprivileged for enhanced security) |
 | image.tag | string | "" | Overrides the image tag whose default is the chart appVersion |
 | imagePullSecrets | list | `[]` | Image pull secrets for private Docker registry |
 | ingress.annotations | object | `{}` | Additional ingress annotations @example annotations:   cert-manager.io/cluster-issuer: letsencrypt-prod |
@@ -49,6 +50,7 @@ Kubernetes: `>=1.19.0-0`
 | livenessProbe.periodSeconds | int | `10` |  |
 | livenessProbe.timeoutSeconds | int | `5` |  |
 | nameOverride | string | `""` | String to partially override bentopdf.fullname template |
+| nodeSelector | object | `{}` | Node selector for pod assignment |
 | persistence.accessMode | string | `"ReadWriteOnce"` | Access mode for the persistent volume |
 | persistence.enabled | bool | `false` | Enable persistent storage |
 | persistence.existingClaim | string | "" | Use an existing PVC |
@@ -71,7 +73,7 @@ Kubernetes: `>=1.19.0-0`
 | resources | object | `{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Resource limits and requests for BentoPDF |
 | securityContext.allowPrivilegeEscalation | bool | `false` | Prevent privilege escalation |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| securityContext.readOnlyRootFilesystem | bool | `true` | Allow write access to root filesystem |
+| securityContext.readOnlyRootFilesystem | bool | `false` | Allow write access to root filesystem |
 | service.annotations | object | `{}` | Additional annotations for the service |
 | service.port | int | `8080` | Kubernetes Service port |
 | service.targetPort | int | `8080` | Container target port |
@@ -81,6 +83,7 @@ Kubernetes: `>=1.19.0-0`
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | "" | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | strategy | object | `{"type":"RollingUpdate"}` | Deployment strategy |
+| tolerations | list | `[]` | Tolerations for pod assignment |
 | vpa | object | `{"enabled":false,"resourcePolicy":{},"updatePolicy":{"updateMode":"Auto"}}` | Vertical Pod Autoscaler configuration |
 | vpa.enabled | bool | `false` | Enable Vertical Pod Autoscaler |
 | vpa.resourcePolicy | object | `{}` | Resource policy for VPA |
