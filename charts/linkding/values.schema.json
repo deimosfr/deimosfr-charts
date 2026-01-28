@@ -104,6 +104,9 @@
         "livenessProbe": {
             "type": "object",
             "properties": {
+                "failureThreshold": {
+                    "type": "integer"
+                },
                 "httpGet": {
                     "type": "object",
                     "properties": {
@@ -114,6 +117,12 @@
                             "type": "string"
                         }
                     }
+                },
+                "initialDelaySeconds": {
+                    "type": "integer"
+                },
+                "timeoutSeconds": {
+                    "type": "integer"
                 }
             }
         },
@@ -155,6 +164,9 @@
         "readinessProbe": {
             "type": "object",
             "properties": {
+                "failureThreshold": {
+                    "type": "integer"
+                },
                 "httpGet": {
                     "type": "object",
                     "properties": {
@@ -165,6 +177,12 @@
                             "type": "string"
                         }
                     }
+                },
+                "initialDelaySeconds": {
+                    "type": "integer"
+                },
+                "timeoutSeconds": {
+                    "type": "integer"
                 }
             }
         },
@@ -185,9 +203,6 @@
                 },
                 "runAsNonRoot": {
                     "type": "boolean"
-                },
-                "runAsUser": {
-                    "type": "integer"
                 }
             }
         },

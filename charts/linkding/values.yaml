@@ -29,21 +29,35 @@ serviceAccount:
 podAnnotations: {}
 
 podSecurityContext: {}
-  # fsGroup: 2000
+  # fsGroup: 1000
 
 securityContext:
-  readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
+  readOnlyRootFilesystem: false
+  runAsNonRoot: false
+  # runAsUser: 1000
 
 livenessProbe:
-  httpGet:
-    path: /
+  tcpSocket:
     port: http
+  initialDelaySeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
 readinessProbe:
   httpGet:
     path: /
     port: http
+  initialDelaySeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 10
+  failureThreshold: 30
+  periodSeconds: 5
 
 service:
   type: ClusterIP

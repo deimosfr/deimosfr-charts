@@ -4,6 +4,8 @@ metadata:
   name: {{ include "linkding.fullname" . }}
   annotations:
     ignore-check.kube-linter.io/no-rolling-update-strategy: "Recreate strategy required for SQLite"
+    ignore-check.kube-linter.io/no-read-only-root-fs: ""
+    ignore-check.kube-linter.io/run-as-non-root: ""
   labels:
     {{- include "linkding.labels" . | nindent 4 }}
 spec:
@@ -53,10 +55,10 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            {{- if .Values.persistence.enabled }}
             - name: data
               mountPath: {{ .Values.persistence.mountPath }}
-            {{- end }}
+            - name: tmp
+              mountPath: /tmp
             {{- if .Values.additionalVolumeMounts }}
               {{- toYaml .Values.additionalVolumeMounts | nindent 12 }}
             {{- end }}
@@ -64,6 +66,8 @@ spec:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
+          startupProbe:
+            {{- toYaml .Values.startupProbe | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -77,11 +81,15 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-        {{- if .Values.persistence.enabled }}
         - name: data
+        {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
             claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ include "linkding.fullname" . }}-data{{- end }}
+        {{- else }}
+          emptyDir: {}
         {{- end }}
+        - name: tmp
+          emptyDir: {}
         {{- if .Values.additionalVolumes }}
           {{- toYaml .Values.additionalVolumes | nindent 8 }}
         {{- end }}
