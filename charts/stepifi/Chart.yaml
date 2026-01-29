@@ -2,7 +2,7 @@ apiVersion: v2
 name: stepifi
 description: A Helm chart for Stepifi - STL to STEP converter
 type: application
-version: 1.0.2
+version: 1.0.3
 appVersion: "2.0.0"
 home: https://github.com/voron69-bit/Stepifi
 icon: https://github.com/voron69-bit.png
