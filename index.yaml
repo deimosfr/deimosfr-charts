@@ -160,6 +160,37 @@ entries:
         - name: mealie
           image: ghcr.io/mealie-recipes/mealie:v3.9.2
     apiVersion: v2
+    appVersion: v3.10.1
+    created: "2026-02-04T02:11:15.866034449Z"
+    description: A Helm chart for Kubernetes
+    digest: e127c603d73ec02eaab13f4b0220101ec26e175e2286c7eeeea826c46a4fe382
+    home: https://mealie.io/
+    icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/mealie.png
+    keywords:
+    - mealie
+    - recipe
+    - manager
+    - self-hosted
+    maintainers:
+    - email: deimosfr@gmail.com
+      name: deimosfr
+    name: mealie
+    sources:
+    - https://github.com/mealie-recipes/mealie
+    - https://github.com/deimosfr/deimosfr-charts
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/mealie-1.0.3/mealie-1.0.3.tgz
+    version: 1.0.3
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/changes: |
+        - kind: added
+          description: Initial chart release
+      artifacthub.io/images: |
+        - name: mealie
+          image: ghcr.io/mealie-recipes/mealie:v3.9.2
+    apiVersion: v2
     appVersion: v3.9.2
     created: "2026-01-20T12:30:34.545053064Z"
     description: A Helm chart for Kubernetes
@@ -222,4 +253,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/stepifi-1.0.2/stepifi-1.0.2.tgz
     version: 1.0.2
-generated: "2026-01-27T14:53:08.186732481Z"
+generated: "2026-02-04T02:11:15.866053921Z"
