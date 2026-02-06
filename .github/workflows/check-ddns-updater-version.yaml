@@ -1,0 +1,40 @@
+name: Check DDNS Updater Version
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run update script
+        id: update-script
+        run: |
+          chmod +x scripts/update-ddns-updater.sh
+          ./scripts/update-ddns-updater.sh
+
+      - name: Create Pull Request
+        if: steps.update-script.outputs.update_performed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(ddns-updater): bump chart to ${{ steps.update-script.outputs.new_version }}"
+          branch: chore/ddns-updater-version-bump-${{ steps.update-script.outputs.new_version }}
+          delete-branch: true
+          title: "chore(ddns-updater): bump chart to ${{ steps.update-script.outputs.new_version }}"
+          body: |
+            Bumps DDNS Updater chart to `${{ steps.update-script.outputs.new_version }}`.
+            
+            Upstream Release: https://github.com/qdm12/ddns-updater/releases/tag/v${{ steps.update-script.outputs.new_version }}
+          labels: |
+            automation
+            dependencies
