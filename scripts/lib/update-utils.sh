@@ -37,8 +37,14 @@ fetch_latest_gitea_tag() {
     local tag
 
     log_info "Fetching latest release from Gitea ($api_url)..."
-    # Assuming the API returns a list of releases and we want the first one
-    tag=$(curl -s "$api_url/releases?limit=1" | jq -r '.[0].tag_name')
+    # Fetch top 50 releases to ensure we catch the latest version even if backports exist
+    # Then parse tags, filter for valid versions, sort semantically, and take the last one
+    tag=$(curl -s "$api_url/releases?limit=50" | \
+          grep -o '"tag_name": *"[^"]*"' | \
+          sed 's/"tag_name": *"//;s/"//' | \
+          grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$' | \
+          sort -V | \
+          tail -n 1)
 
     if [[ -z "$tag" || "$tag" == "null" ]]; then
         log_error "Could not fetch latest tag from $api_url"
