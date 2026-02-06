@@ -459,4 +459,24 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/stepifi-1.0.2/stepifi-1.0.2.tgz
     version: 1.0.2
-generated: "2026-02-06T10:07:49.180269444Z"
+  technitium:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2026-02-06T10:25:06.011100898Z"
+    description: A Helm chart for Technitium DNS Server
+    digest: 645ad994297f57debd0d53fb02b3525e5902c31a7a677fc1286dbc4ef2f810dc
+    icon: https://technitium.com/img/dns-server-icon.png
+    keywords:
+    - dns
+    - technitium
+    - adblock
+    maintainers:
+    - name: gathered-from-compose
+    name: technitium
+    sources:
+    - https://github.com/TechnitiumSoftware/DnsServer
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/technitium-14.3.0/technitium-14.3.0.tgz
+    version: 14.3.0
+generated: "2026-02-06T10:25:06.011136935Z"
