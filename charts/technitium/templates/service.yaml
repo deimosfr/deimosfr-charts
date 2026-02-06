@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "technitium.fullname" . }}
+  labels:
+    {{- include "technitium.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- if .Values.service.dns.enabled }}
+    - port: {{ .Values.service.dns.port }}
+      targetPort: 53
+      protocol: UDP
+      name: dns-udp
+      {{- if .Values.service.dns.nodePort }}
+      nodePort: {{ .Values.service.dns.nodePort }}
+      {{- end }}
+    - port: {{ .Values.service.dns.port }}
+      targetPort: 53
+      protocol: TCP
+      name: dns-tcp
+    {{- end }}
+    {{- if .Values.service.http.enabled }}
+    - port: {{ .Values.service.http.port }}
+      targetPort: {{ .Values.service.http.targetPort }}
+      protocol: TCP
+      name: http
+    {{- end }}
+    {{- if .Values.service.https.enabled }}
+    - port: {{ .Values.service.https.port }}
+      targetPort: {{ .Values.service.https.targetPort }}
+      protocol: TCP
+      name: https
+    {{- end }}
+    {{- if .Values.service.dot.enabled }}
+    - port: {{ .Values.service.dot.port }}
+      targetPort: 853
+      protocol: TCP
+      name: dot-tcp
+    - port: {{ .Values.service.dot.port }}
+      targetPort: 853
+      protocol: UDP
+      name: doq-udp
+    {{- end }}
+    {{- if .Values.service.doh.enabled }}
+    - port: {{ .Values.service.doh.port }}
+      targetPort: 443
+      protocol: TCP
+      name: doh-tcp
+    {{- end }}
+  selector:
+    {{- include "technitium.selectorLabels" . | nindent 4 }}

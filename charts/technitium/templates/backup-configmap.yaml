@@ -1,0 +1,74 @@
+{{- if .Values.backup.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "technitium.fullname" . }}-backup
+  labels:
+    {{- include "technitium.labels" . | nindent 4 }}
+data:
+  backup.sh: |
+    #!/bin/sh
+    set -e
+
+    # Install aws-cli if not present (assuming alpine for now)
+    if ! command -v aws &> /dev/null; then
+        echo "Installing aws-cli..."
+        apk add --no-cache aws-cli
+    fi
+
+    echo "Starting backup loop..."
+    
+    while true; do
+        # Calculate next run time based on schedule (simplified for daily 2am)
+        # Ideally we would use a proper cron, but for a simple sidecar loop, we can just sleep.
+        # However, to respect the schedule "0 2 * * *", we need crond or a smarter sleep.
+        # Let's try to use crond if possible, or just sleep for 24h if schedule is too complex to parse in sh.
+        # Given the request is "keep last 30", a daily loop is implied.
+        
+        # Current implementation: Infinite loop with sleep, simulating daily backup.
+        # TODO: Parse cron schedule properly or use crond in foreground.
+        
+        # Simple approach: Run backup immediately on start? No, that might restart spam.
+        # Run backup at 2 AM.
+        
+        current_time=$(date +%s)
+        # Calculate seconds until next 02:00
+        # This is a bit complex in pure sh. 
+        # Alternative: Just use crond. Alpine has busybox crond.
+        
+        echo "$BACKUP_SCHEDULE /backup-script/run-backup.sh" > /etc/crontabs/root
+        echo "Starting crond..."
+        exec crond -f -d 8
+    done
+
+  run-backup.sh: |
+    #!/bin/sh
+    set -e
+    
+    TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+    FILENAME="technitium-backup-$TIMESTAMP.tar.gz"
+    BACKUP_PATH="/tmp/$FILENAME"
+    S3_PATH="s3://$S3_BUCKET/$S3_PATH_PREFIX/$FILENAME"
+    
+    echo "Creating backup $FILENAME..."
+    tar -czf "$BACKUP_PATH" -C /etc/dns .
+    
+    echo "Uploading to $S3_PATH..."
+    aws s3 cp "$BACKUP_PATH" "$S3_PATH" --endpoint-url "$S3_ENDPOINT"
+    
+    echo "Cleaning up local file..."
+    rm "$BACKUP_PATH"
+    
+    echo "Applying retention policy (keep last $RETENTION_COUNT)..."
+    # List files, sort, skip last N, delete the rest
+    aws s3 ls "s3://$S3_BUCKET/$S3_PATH_PREFIX/" --endpoint-url "$S3_ENDPOINT" | grep "technitium-backup-" | sort | head -n -"$RETENTION_COUNT" | while read -r line; do
+        file=$(echo "$line" | awk '{print $4}')
+        if [ -n "$file" ]; then
+            echo "Deleting old backup: $file"
+            aws s3 rm "s3://$S3_BUCKET/$S3_PATH_PREFIX/$file" --endpoint-url "$S3_ENDPOINT"
+        fi
+    done
+    
+    echo "Backup completed successfully."
+
+{{- end }}

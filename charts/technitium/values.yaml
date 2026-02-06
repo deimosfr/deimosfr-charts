@@ -1,0 +1,234 @@
+image:
+  repository: technitium/dns-server
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Controller configuration
+controller:
+  # -- Kind of controller. Allowed values: Deployment, StatefulSet, DaemonSet
+  kind: StatefulSet
+  # -- Number of replicas (ignored if kind is DaemonSet)
+  replicas: 1
+  # -- Deployment/Update strategy
+  strategy:
+    # For StatefulSet/DaemonSet, use "OnDelete" or "RollingUpdate"
+    # For Deployment, use "Recreate" or "RollingUpdate"
+    type: RollingUpdate
+
+autoscaling:
+  # -- Vertical Pod Autoscaler configuration
+  vpa:
+    enabled: false
+    # -- Update mode: "Auto", "Recreate", "Initial", "Off" or "InPlaceOrRecreate"
+    updateMode: "InPlaceOrRecreate"
+    # -- Resource policy for containers
+    #   resourcePolicy:
+    #     containerPolicies:
+    #     - containerName: '*'
+    #       minAllowed:
+    #         cpu: 10m
+    #         memory: 64Mi
+    #       maxAllowed:
+    #         cpu: 500m
+    #         memory: 1G
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+# -- Use host network
+hostNetwork: false
+
+podSecurityContext:
+  # fsGroup: 2000
+  sysctls:
+    - name: net.ipv4.ip_local_port_range
+      value: "1024 65535"
+
+securityContext:
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  # Main DNS Service (UDP/TCP 53)
+  dns:
+    enabled: true
+    port: 53
+    nodePort: null
+    # External IP configuration if needed for LoadBalancer
+    annotations: {}
+  # DNS Web Console (HTTP 5380)
+  http:
+    enabled: true
+    port: 5380
+    targetPort: 5380
+  # DNS Web Console (HTTPS 53443)
+  https:
+    enabled: false
+    port: 53443
+    targetPort: 53443
+  # DNS over TLS/QUIC (853)
+  dot:
+    enabled: false
+    port: 853
+  # DNS over HTTPS (443)
+  doh:
+    enabled: false
+    port: 443
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+persistence:
+  enabled: false
+  # storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+  # annotations: {}
+  path: /etc/dns
+
+config:
+  # -- The primary domain name used by this DNS Server to identify itself.
+  domain: dns-server
+  # -- DNS Server will use IPv6 for querying whenever possible with this option enabled.
+  preferIpv6: false
+  
+  recursion:
+    # -- Recursion options: Allow, Deny, AllowOnlyForPrivateNetworks, UseSpecifiedNetworkACL.
+    policy: AllowOnlyForPrivateNetworks
+    # -- List of IP addresses or network addresses to allow/deny access. 
+    # Add ! character at the start to deny access.
+    # e.g. ["192.168.10.0/24", "!192.168.10.2"]
+    networkAcl: []
+  
+  blocking:
+    # -- Sets the DNS server to block domain names using Blocked Zone and Block List Zone.
+    enabled: false
+    # -- Specifies if the DNS Server should respond with TXT records containing a blocked domain report.
+    allowTxtBlockingReport: false
+    # -- A list of block list URLs.
+    blockLists: []
+
+  forwarding:
+    # -- List of forwarder addresses.
+    forwarders: 
+      - 1.1.1.1
+      - 8.8.8.8
+    # -- Forwarder protocol options: Udp, Tcp, Tls, Https, HttpsJson.
+    protocol: Tcp
+
+  logging:
+    # -- Enable this option to use local time instead of UTC for logging.
+    useLocalTime: true
+
+  # -- Additional environment variables
+  extraEnv: {}
+
+# Secret management
+secret:
+  enabled: false
+  # -- Admin password (will be stored in a Kubernetes secret)
+  # adminPassword: "changeme"
+  adminPassword: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# HTTPRoute configuration
+httproute:
+  enabled: false
+  annotations: {}
+  # -- Hostnames to be matched
+  # hostnames:
+  #   - technitium.example.com
+  hostnames: []
+  # -- Parent references (Gateway)
+  # parentRefs:
+  #   - name: my-gateway
+  #     namespace: my-gateway-namespace
+  parentRefs: []
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: technitium
+
+# -- Backup configuration
+backup:
+  enabled: false
+  image:
+    repository: alpine
+    tag: latest
+    pullPolicy: IfNotPresent
+  
+  # -- Resources for backup sidecar
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+  # -- Cron schedule for backup (default: 2am daily)
+  schedule: "0 2 * * *"
+  # -- Number of backups to keep
+  retention:
+    keepLast: 30
+  # -- S3 Configuration
+  s3:
+    endpoint: ""
+    region: "us-east-1"
+    bucket: ""
+    path: "technitium-backup"
+    # accessKey: ""
+    # secretKey: ""
+    existingSecret: ""

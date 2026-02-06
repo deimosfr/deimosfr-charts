@@ -47,6 +47,30 @@ fetch_latest_gitea_tag() {
     echo "$tag"
 }
 
+# Fetch latest tag from Docker Hub
+fetch_latest_docker_hub_tag() {
+    local namespace="$1"
+    local repo="$2"
+    local tag
+
+    log_info "Fetching latest release for $namespace/$repo from Docker Hub..."
+    # Fetch tags, filter out ones with letters (except v prefix), sort version sort, tail -1
+    # This assumes semantic versioning tags like 1.2.3 or v1.2.3
+    # We filter out 'latest', 'nightly', tags with suffixes etc. by regex
+    tag=$(curl -s "https://hub.docker.com/v2/repositories/$namespace/$repo/tags?page_size=100" | \
+          grep -o '"name": *"[^"]*"' | \
+          sed 's/"name": *"//;s/"//' | \
+          grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | \
+          sort -V | \
+          tail -n 1)
+
+    if [[ -z "$tag" ]]; then
+        log_error "Could not fetch latest tag for $namespace/$repo"
+        return 1
+    fi
+    echo "$tag"
+}
+
 # Get version from Chart.yaml
 get_local_chart_version() {
     local chart_dir="$1"

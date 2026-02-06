@@ -1,0 +1,15 @@
+apiVersion: v2
+name: technitium
+description: A Helm chart for Technitium DNS Server
+type: application
+version: 14.3.0
+appVersion: "latest"
+keywords:
+  - dns
+  - technitium
+  - adblock
+maintainers:
+  - name: gathered-from-compose
+icon: https://technitium.com/img/dns-server-icon.png
+sources:
+  - https://github.com/TechnitiumSoftware/DnsServer

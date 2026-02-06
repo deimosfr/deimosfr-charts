@@ -1,0 +1,218 @@
+{{- $kind := .Values.controller.kind | default "StatefulSet" -}}
+apiVersion: apps/v1
+kind: {{ $kind }}
+metadata:
+  name: {{ include "technitium.fullname" . }}
+  labels:
+    {{- include "technitium.labels" . | nindent 4 }}
+spec:
+  {{- if ne $kind "DaemonSet" }}
+  replicas: {{ .Values.controller.replicas | default 1 }}
+  {{- end }}
+  
+  {{- if eq $kind "StatefulSet" }}
+  serviceName: {{ include "technitium.fullname" . }}
+  {{- end }}
+
+  {{- with .Values.controller.strategy }}
+  {{- if eq $kind "Deployment" }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- else }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+
+  selector:
+    matchLabels:
+      {{- include "technitium.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "technitium.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      hostNetwork: {{ .Values.hostNetwork }}
+      {{- if .Values.hostNetwork }}
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- end }}
+      serviceAccountName: {{ include "technitium.serviceAccountName" . }}
+      securityContext:
+        {{- if .Values.hostNetwork }}
+        {{- $psc := omit .Values.podSecurityContext "sysctls" }}
+        {{- toYaml $psc | nindent 8 }}
+        {{- else }}
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: DNS_SERVER_DOMAIN
+              value: {{ .Values.config.domain | quote }}
+            - name: DNS_SERVER_PREFER_IPV6
+              value: {{ .Values.config.preferIpv6 | quote }}
+            - name: DNS_SERVER_RECURSION
+              value: {{ .Values.config.recursion.policy | quote }}
+            {{- if .Values.config.recursion.networkAcl }}
+            - name: DNS_SERVER_RECURSION_NETWORK_ACL
+              value: {{ join ", " .Values.config.recursion.networkAcl | quote }}
+            {{- end }}
+            - name: DNS_SERVER_ENABLE_BLOCKING
+              value: {{ .Values.config.blocking.enabled | quote }}
+            - name: DNS_SERVER_ALLOW_TXT_BLOCKING_REPORT
+              value: {{ .Values.config.blocking.allowTxtBlockingReport | quote }}
+            {{- if .Values.config.blocking.blockLists }}
+            - name: DNS_SERVER_BLOCK_LIST_URLS
+              value: {{ join "," .Values.config.blocking.blockLists | quote }} # Note: Comma separated
+            {{- end }}
+            {{- if .Values.config.forwarding.forwarders }}
+            - name: DNS_SERVER_FORWARDERS
+              value: {{ join ", " .Values.config.forwarding.forwarders | quote }}
+            - name: DNS_SERVER_FORWARDER_PROTOCOL
+              value: {{ .Values.config.forwarding.protocol | quote }}
+            {{- end }}
+            - name: DNS_SERVER_LOG_USING_LOCAL_TIME
+              value: {{ .Values.config.logging.useLocalTime | quote }}
+            
+            # Forward extraEnv
+            {{- range $key, $val := .Values.config.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+            {{- end }}
+            
+            {{- if .Values.secret.enabled }}
+            - name: DNS_SERVER_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "technitium.fullname" . }}-secret
+                  key: DNS_SERVER_ADMIN_PASSWORD
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 5380
+              protocol: TCP
+            - name: dns-udp
+              containerPort: 53
+              protocol: UDP
+            - name: dns-tcp
+              containerPort: 53
+              protocol: TCP
+            {{- if .Values.service.dot.enabled }}
+            - name: dot-tcp
+              containerPort: 853
+              protocol: TCP
+            - name: doq-udp
+              containerPort: 853
+              protocol: UDP
+            {{- end }}
+            {{- if .Values.service.doh.enabled }}
+            - name: doh-tcp
+              containerPort: 443
+              protocol: TCP
+            {{- end }}
+          volumeMounts:
+            {{- if .Values.persistence.enabled }}
+            - name: config
+              mountPath: {{ .Values.persistence.path }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        {{- if .Values.backup.enabled }}
+        - name: backup
+          image: "{{ .Values.backup.image.repository }}:{{ .Values.backup.image.tag }}"
+          imagePullPolicy: {{ .Values.backup.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.backup.resources | nindent 12 }}
+          command: ["/bin/sh", "/backup-script/backup.sh"]
+          env:
+            - name: BACKUP_SCHEDULE
+              value: {{ .Values.backup.schedule | quote }}
+            - name: S3_ENDPOINT
+              value: {{ .Values.backup.s3.endpoint | quote }}
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.backup.s3.region | quote }}
+            - name: S3_BUCKET
+              value: {{ .Values.backup.s3.bucket | quote }}
+            - name: S3_PATH_PREFIX
+              value: {{ .Values.backup.s3.path | quote }}
+            - name: RETENTION_COUNT
+              value: {{ .Values.backup.retention.keepLast | quote }}
+            {{- if .Values.backup.s3.existingSecret }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backup.s3.existingSecret }}
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backup.s3.existingSecret }}
+                  key: AWS_SECRET_ACCESS_KEY
+            {{- else if and .Values.backup.s3.accessKey .Values.backup.s3.secretKey }}
+            - name: AWS_ACCESS_KEY_ID
+              value: {{ .Values.backup.s3.accessKey | quote }}
+            - name: AWS_SECRET_ACCESS_KEY
+              value: {{ .Values.backup.s3.secretKey | quote }}
+            {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/dns
+              readOnly: true
+            - name: backup-script
+              mountPath: /backup-script
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        {{- if .Values.persistence.enabled }}
+        {{- if or (ne $kind "StatefulSet") (not .Values.persistence.enabled) }}
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ include "technitium.fullname" . }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.backup.enabled }}
+        - name: backup-script
+          configMap:
+            name: {{ include "technitium.fullname" . }}-backup
+            defaultMode: 0755
+        {{- end }}
+  
+  {{- if and (eq $kind "StatefulSet") .Values.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: config
+      spec:
+        accessModes:
+          {{- range .Values.persistence.accessModes }}
+          - {{ . | quote }}
+          {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size | quote }}
+        {{- if .Values.persistence.storageClassName }}
+        storageClassName: {{ .Values.persistence.storageClassName | quote }}
+        {{- end }}
+  {{- end }}
