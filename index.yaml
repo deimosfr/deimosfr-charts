@@ -211,6 +211,17 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/garage-1.3.1/garage-1.3.1.tgz
     version: 1.3.1
+  garage-webui:
+  - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2026-02-06T09:13:36.045833584Z"
+    description: A Helm chart for Garage Web UI
+    digest: 1132b74b18c86c5310805366d0ff439667af4abd8de87f2daa2f8dddb9dfc195
+    name: garage-webui
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/garage-webui-1.1.0/garage-webui-1.1.0.tgz
+    version: 1.1.0
   linkding:
   - annotations:
       artifacthub.io/category: integration-delivery
@@ -425,4 +436,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/stepifi-1.0.2/stepifi-1.0.2.tgz
     version: 1.0.2
-generated: "2026-02-06T09:13:06.689892555Z"
+generated: "2026-02-06T09:13:36.045884098Z"
