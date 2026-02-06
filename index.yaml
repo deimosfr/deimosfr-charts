@@ -191,6 +191,18 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/csi-driver-smb-1.20.0/csi-driver-smb-1.20.0.tgz
     version: 1.20.0
+  ddns-updater:
+  - apiVersion: v2
+    appVersion: v2.9.0
+    created: "2026-02-06T10:07:48.883678248Z"
+    description: A Helm chart for qdm12/ddns-updater, a lightweight universal DDNS
+      updater.
+    digest: 1318a2b320f33907ec1949b88e93f93bc1f3a97d5b905cef9839eace8e89585a
+    name: ddns-updater
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/ddns-updater-2.9.0/ddns-updater-2.9.0.tgz
+    version: 2.9.0
   garage:
   - apiVersion: v2
     appVersion: v1.3.1
@@ -222,6 +234,17 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/garage-webui-1.1.0/garage-webui-1.1.0.tgz
     version: 1.1.0
+  gateway-api-crds:
+  - apiVersion: v2
+    appVersion: v1.4.1
+    created: "2026-02-06T10:07:49.180251581Z"
+    description: A Helm chart for Kubernetes
+    digest: ba55f800052c6c35b67177f2856c3f756d1569ab3b976d12d8b1ae167860b473
+    name: gateway-api-crds
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/gateway-api-crds-1.4.1/gateway-api-crds-1.4.1.tgz
+    version: 1.4.1
   linkding:
   - annotations:
       artifacthub.io/category: integration-delivery
@@ -436,4 +459,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/stepifi-1.0.2/stepifi-1.0.2.tgz
     version: 1.0.2
-generated: "2026-02-06T09:13:36.045884098Z"
+generated: "2026-02-06T10:07:49.180269444Z"
