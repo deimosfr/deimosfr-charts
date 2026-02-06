@@ -61,7 +61,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore(mealie): bump appVersion to ${{ steps.get-latest-release.outputs.latest_version }}"
-          branch: chore/mealie-version-bump-${{ steps.get-latest-release.outputs.latest_version }}
+          branch: chore/mealie-version-bump
           delete-branch: true
           title: "chore(mealie): bump appVersion to ${{ steps.get-latest-release.outputs.latest_version }}"
           body: |

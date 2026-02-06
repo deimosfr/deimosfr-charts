@@ -61,7 +61,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore(stepifi): bump appVersion to ${{ steps.update-chart.outputs.version_no_v }}"
-          branch: chore/stepifi-version-bump-${{ steps.update-chart.outputs.version_no_v }}
+          branch: chore/stepifi-version-bump
           delete-branch: true
           title: "chore(stepifi): bump appVersion to ${{ steps.update-chart.outputs.version_no_v }}"
           body: |

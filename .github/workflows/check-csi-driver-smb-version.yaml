@@ -28,7 +28,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore(csi-driver-smb): bump chart to ${{ steps.update-script.outputs.new_version }}"
-          branch: chore/csi-driver-smb-version-bump-${{ steps.update-script.outputs.new_version }}
+          branch: chore/csi-driver-smb-version-bump
           delete-branch: true
           title: "chore(csi-driver-smb): bump chart to ${{ steps.update-script.outputs.new_version }}"
           body: |

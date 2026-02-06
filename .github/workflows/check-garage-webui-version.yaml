@@ -28,7 +28,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore(garage-webui): bump chart to ${{ steps.update-script.outputs.new_version }}"
-          branch: chore/garage-webui-version-bump-${{ steps.update-script.outputs.new_version }}
+          branch: chore/garage-webui-version-bump
           delete-branch: true
           title: "chore(garage-webui): bump chart to ${{ steps.update-script.outputs.new_version }}"
           body: |

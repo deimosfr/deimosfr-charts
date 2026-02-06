@@ -65,7 +65,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore(bentopdf): bump appVersion to ${{ steps.update-chart.outputs.version_no_v }}"
-          branch: chore/bentopdf-version-bump-${{ steps.update-chart.outputs.version_no_v }}
+          branch: chore/bentopdf-version-bump
           delete-branch: true
           title: "chore(bentopdf): bump appVersion to ${{ steps.update-chart.outputs.version_no_v }}"
           body: |

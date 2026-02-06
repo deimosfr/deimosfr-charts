@@ -28,7 +28,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore(ddns-updater): bump chart to ${{ steps.update-script.outputs.new_version }}"
-          branch: chore/ddns-updater-version-bump-${{ steps.update-script.outputs.new_version }}
+          branch: chore/ddns-updater-version-bump
           delete-branch: true
           title: "chore(ddns-updater): bump chart to ${{ steps.update-script.outputs.new_version }}"
           body: |
