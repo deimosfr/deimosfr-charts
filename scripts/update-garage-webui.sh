@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Source shared utilities
+source "$(dirname "$0")/lib/update-utils.sh"
+
 # Configuration
 REPO_OWNER="khairul169"
 REPO_NAME="garage-webui"
@@ -8,47 +11,28 @@ CHART_NAME="garage-webui"
 TARGET_DIR="charts/$CHART_NAME"
 
 # Get latest release tag
-echo "Fetching latest release from GitHub..."
-LATEST_TAG=$(curl -s "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest" | jq -r '.tag_name')
-
-if [ -z "$LATEST_TAG" ] || [ "$LATEST_TAG" == "null" ]; then
-    echo "Error: Could not fetch latest tag."
-    exit 1
-fi
-
-echo "Latest tag: $LATEST_TAG"
+LATEST_TAG=$(fetch_latest_github_tag "$REPO_OWNER" "$REPO_NAME")
+log_info "Latest tag: $LATEST_TAG"
 
 # Check local version (if exists)
-LOCAL_VERSION=""
-if [ -f "$TARGET_DIR/Chart.yaml" ]; then
-    LOCAL_VERSION=$(grep '^version:' "$TARGET_DIR/Chart.yaml" | awk '{print $2}')
-fi
+LOCAL_VERSION=$(get_local_chart_version "$TARGET_DIR")
+log_info "Local version: $LOCAL_VERSION"
 
-echo "Local version: $LOCAL_VERSION"
+# Normalize versions for comparison
+LATEST_VER_NUM=$(normalize_version "$LATEST_TAG")
+LOCAL_VER_NUM=$(normalize_version "$LOCAL_VERSION")
 
-# Normalize versions for comparison (remove 'v' prefix if present)
-LATEST_VER_NUM="${LATEST_TAG#v}"
-LOCAL_VER_NUM="${LOCAL_VERSION#v}"
-
-if [ "$LATEST_VER_NUM" == "$LOCAL_VER_NUM" ]; then
-    echo "Version match ($LATEST_VER_NUM). No update needed."
+if [[ "$LATEST_VER_NUM" == "$LOCAL_VER_NUM" ]]; then
+    log_info "Version match ($LATEST_VER_NUM). No update needed."
     exit 0
 fi
 
-echo "Update needed: $LOCAL_VER_NUM -> $LATEST_VER_NUM"
+log_info "Update needed: $LOCAL_VER_NUM -> $LATEST_VER_NUM"
 
-# Update Chart.yaml version
-if [ -f "$TARGET_DIR/Chart.yaml" ]; then
-    echo "Bumping Chart.yaml version to $LATEST_VER_NUM"
-    # Update version
-    sed -i "s/^version: .*/version: $LATEST_VER_NUM/" "$TARGET_DIR/Chart.yaml"
-    # Update appVersion
-    sed -i "s/^appVersion: .*/appVersion: \"$LATEST_VER_NUM\"/" "$TARGET_DIR/Chart.yaml"
-fi
+# Update Chart.yaml
+update_chart_yaml "$TARGET_DIR" "$LATEST_VER_NUM" "$LATEST_VER_NUM"
 
-echo "Successfully updated $CHART_NAME to $LATEST_TAG"
+log_info "Successfully updated $CHART_NAME to $LATEST_TAG"
 
-if [ -n "$GITHUB_OUTPUT" ]; then
-    echo "new_version=$LATEST_VER_NUM" >> "$GITHUB_OUTPUT"
-    echo "update_performed=true" >> "$GITHUB_OUTPUT"
-fi
+# Output for GitHub Actions
+write_github_output "$LATEST_VER_NUM"
