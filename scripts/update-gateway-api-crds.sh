@@ -35,8 +35,8 @@ log_info "Local appVersion: $LOCAL_APP_VERSION"
 LATEST_VER_NUM=$(normalize_version "$LATEST_TAG")
 LOCAL_VER_NUM=$(normalize_version "$LOCAL_APP_VERSION")
 
-if [[ "$LATEST_VER_NUM" == "$LOCAL_VER_NUM" ]]; then
-    log_info "Version match ($LATEST_VER_NUM). No update needed."
+if ! version_gt "$LATEST_VER_NUM" "$LOCAL_VER_NUM"; then
+    log_info "No update needed (Local: $LOCAL_VER_NUM, Remote: $LATEST_VER_NUM)"
     exit 0
 fi
 

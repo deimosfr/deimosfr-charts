@@ -96,6 +96,27 @@ normalize_version() {
     echo "${version#v}"
 }
 
+# Compare versions (returns 0 if $1 > $2, 1 otherwise)
+version_gt() {
+    local v1="$1"
+    local v2="$2"
+    
+    if [[ "$v1" == "$v2" ]]; then
+        return 1
+    fi
+    
+    # split words, sort -V, check if the last line is v1
+    # if v1 is greater, it will be the last line
+    local greater
+    greater=$(printf "%s\n%s" "$v1" "$v2" | sort -V | tail -n 1)
+    
+    if [[ "$greater" == "$v1" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # Create a temporary directory and ensure cleanup
 create_temp_dir() {
     local prefix="$1"
