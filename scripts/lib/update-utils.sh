@@ -90,12 +90,28 @@ get_local_chart_version() {
     grep '^version:' "$version_file" | awk '{print $2}'
 }
 
-# Normalize version (remove leading 'v')
+# Normalize version (remove leading 'v' and ensure at least 3 components)
 normalize_version() {
     local version="$1"
-    echo "${version#v}"
+    version="${version#v}"
+    
+    # Check number of components
+    local count
+    count=$(echo "$version" | tr -cd '.' | wc -c)
+    
+    # If X.Y (1 dot), add .0 -> X.Y.0
+    if [[ "$count" -eq 1 ]]; then
+        version="${version}.0"
+    fi
+    # If X (0 dots), add .0.0 -> X.0.0
+    if [[ "$count" -eq 0 ]]; then
+        version="${version}.0.0"
+    fi
+    
+    echo "$version"
 }
 
+# Compare versions (returns 0 if $1 > $2, 1 otherwise)
 # Compare versions (returns 0 if $1 > $2, 1 otherwise)
 version_gt() {
     local v1="$1"
@@ -105,16 +121,48 @@ version_gt() {
         return 1
     fi
     
-    # split words, sort -V, check if the last line is v1
-    # if v1 is greater, it will be the last line
-    local greater
-    greater=$(printf "%s\n%s" "$v1" "$v2" | sort -V | tail -n 1)
+    # split words, sort -V
+    # If v1 > v2, then "v1\nv2" sorted is "v2\nv1"
+    # If v1 < v2, then "v1\nv2" sorted is "v1\nv2"
+    # If v1 == v2 (semantically), it depends on sort stability but we can check reverse.
     
-    if [[ "$greater" == "$v1" ]]; then
-        return 0
-    else
+    local sorted
+    sorted=$(printf "%s\n%s" "$v1" "$v2" | sort -V | head -n 1)
+    
+    # If the smaller one (head) is v1, then v1 <= v2. So not greater.
+    if [[ "$sorted" == "$v1" ]]; then
         return 1
     fi
+    
+    # If we are here, v1 is NOT the smaller one.
+    # It means v1 > v2 OR v1 == v2 (and sort put v1 second).
+    # To be strictly greater, we must ensure they are not equal.
+    # We already checked string equality.
+    # Let's check if they are semantically equal.
+    # If "v2\nv1" | sort -V | head -n 1 is v2, then v2 <= v1.
+    
+    # Simplest: v1 > v2 if v1 != v2 AND (sort v1 v2 | tail) == v1
+    # BUT we need to handle semantic equality e.g. 1.0 == 1.0.0
+    
+    local head
+    head=$(printf "%s\n%s" "$v1" "$v2" | sort -V | head -n 1)
+    
+    # If v1 is semantically smaller or equal, it might come first.
+    # If v1 > v2, v2 MUST come first.
+    if [[ "$head" == "$v1" ]]; then
+        # v1 <= v2
+        return 1
+    fi
+    
+    # If head is v2, then v2 <= v1.
+    # We need to distinguish v2 < v1 (return 0) from v2 == v1 (return 1).
+    # If they are semantically equal, `head` could be v2 (if stable sort and input was v2, v1? no input is v1, v2).
+    # sort -V is usually stable.
+    # input: v1, v2.
+    # if v1 == v2, output: v1, v2. head is v1.
+    # matches above check (head == v1) -> returns 1. Correct.
+    
+    return 0
 }
 
 # Create a temporary directory and ensure cleanup
