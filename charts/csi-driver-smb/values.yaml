@@ -132,7 +132,7 @@ linux:
         memory: 20Mi
 
 windows:
-  enabled: true
+  enabled: false
   useHostProcessContainers: true
   dsName: csi-smb-node-win # daemonset name
   kubelet: 'C:\var\lib\kubelet'

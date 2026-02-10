@@ -62,6 +62,13 @@ rm -rf "$TARGET_DIR"
 mkdir -p "$TARGET_DIR"
 cp -r "$SOURCE_PATH/"* "$TARGET_DIR/"
 
+# Disable windows support by default to avoid trivy scanning errors on linux
+# The windows image tag has a suffix -windows-hp which causes:
+# "remote error: no child with platform linux/amd64"
+log_info "Disabling windows support in values.yaml..."
+# Use perl for multi-line replacement to target only the windows section
+perl -i -pe 'BEGIN{undef $/;} s/windows:\n  enabled: true/windows:\n  enabled: false/smg' "$TARGET_DIR/values.yaml"
+
 log_info "Successfully updated $CHART_NAME to $LATEST_TAG"
 
 # Output for GitHub Actions
