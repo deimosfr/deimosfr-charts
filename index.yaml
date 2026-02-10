@@ -15,6 +15,42 @@ entries:
         - name: Docker image source
           url: https://github.com/alam00000/bentopdf
     apiVersion: v2
+    appVersion: 2.2.0
+    created: "2026-02-10T15:07:46.803422471Z"
+    description: A Helm chart for BentoPDF - PDF manipulation service using BentoML
+    digest: cc5402f8afd833856517b0fc9f25626c273e541fb135c82eb218891d02541ecf
+    home: https://github.com/alam00000/bentopdf
+    icon: https://raw.githubusercontent.com/alam00000/bentopdf/refs/heads/main/public/images/favicon-no-bg.svg
+    keywords:
+    - pdf
+    - bentoml
+    - converter
+    kubeVersion: '>=1.19.0-0'
+    maintainers:
+    - email: deimosfr@gmail.com
+      name: deimosfr
+    name: bentopdf
+    sources:
+    - https://github.com/alam00000/bentopdf
+    - https://github.com/deimosfr/deimosfr-charts/tree/main/charts/bentopdf
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/bentopdf-1.0.7/bentopdf-1.0.7.tgz
+    version: 1.0.7
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/changes: |
+        - kind: added
+          description: "First release"
+      artifacthub.io/images: |
+        - name: bentopdf
+          image: bentopdf/bentopdf-simple:latest
+      artifacthub.io/links: |
+        - name: Chart source
+          url: https://github.com/deimosfr/deimosfr-charts/tree/main/charts/bentopdf
+        - name: Docker image source
+          url: https://github.com/alam00000/bentopdf
+    apiVersion: v2
     appVersion: 2.1.0
     created: "2026-02-06T05:58:14.071232445Z"
     description: A Helm chart for BentoPDF - PDF manipulation service using BentoML
@@ -498,4 +534,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/technitium-14.3.0/technitium-14.3.0.tgz
     version: 14.3.0
-generated: "2026-02-06T20:01:43.674122203Z"
+generated: "2026-02-10T15:07:47.178407083Z"
