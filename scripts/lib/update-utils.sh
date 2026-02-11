@@ -87,13 +87,15 @@ get_local_chart_version() {
         return
     fi
     
-    grep '^version:' "$version_file" | awk '{print $2}'
+    grep '^[[:blank:]]*version:' "$version_file" | awk '{print $2}'
 }
 
 # Normalize version (remove leading 'v' and ensure at least 3 components)
 normalize_version() {
     local version="$1"
     version="${version#v}"
+    # Strip quotes
+    version=$(echo "$version" | tr -d '"' | tr -d "'")
     
     # Check number of components
     local count
@@ -191,12 +193,12 @@ update_chart_yaml() {
     if [[ -f "$version_file" ]]; then
         log_info "Bumping Chart.yaml version to $norm_version"
         # Update version (always normalized)
-        sed -i "s/^version: .*/version: $norm_version/" "$version_file"
+        sed -i "s/^[[:blank:]]*version: .*/version: $norm_version/" "$version_file"
         
         # Update appVersion (preserve format if possible, but here we likely want the tag)
         # Note: Some charts use 'v' prefix for appVersion, some don't. 
         # The caller typically passes the raw tag for appVersion.
-        sed -i "s/^appVersion: .*/appVersion: \"$new_app_version\"/" "$version_file"
+        sed -i "s/^[[:blank:]]*appVersion: .*/appVersion: \"$new_app_version\"/" "$version_file"
     else
         log_error "Chart.yaml not found at $version_file"
         return 1
