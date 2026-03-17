@@ -5,6 +5,12 @@
         "affinity": {
             "type": "object"
         },
+        "annotations": {
+            "type": "object"
+        },
+        "labels": {
+            "type": "object"
+        },
         "fullnameOverride": {
             "type": "string"
         },
@@ -203,6 +209,12 @@
                 },
                 "storageClass": {
                     "type": "string"
+                },
+                "annotations": {
+                    "type": "object"
+                },
+                "labels": {
+                    "type": "object"
                 }
             }
         },

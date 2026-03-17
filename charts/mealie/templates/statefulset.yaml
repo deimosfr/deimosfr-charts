@@ -2,8 +2,15 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "mealie.fullname" . }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "mealie.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   serviceName: {{ include "mealie.fullname" . }}
   replicas: {{ .Values.replicaCount }}
@@ -22,6 +29,9 @@ spec:
       {{- end }}
       labels:
         {{- include "mealie.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       restartPolicy: Always
       {{- with .Values.imagePullSecrets }}
@@ -80,6 +90,15 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: data
+      {{- with .Values.persistence.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mealie.labels" . | nindent 8 }}
+        {{- with .Values.persistence.labels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       accessModes:
         - {{ .Values.persistence.accessMode | quote }}

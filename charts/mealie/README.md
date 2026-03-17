@@ -1,6 +1,6 @@
 # mealie
 
-![Version: 1.0.2](https://img.shields.io/badge/Version-1.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.9.2](https://img.shields.io/badge/AppVersion-v3.9.2-informational?style=flat-square)
+![Version: 1.0.4](https://img.shields.io/badge/Version-1.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.10.2](https://img.shields.io/badge/AppVersion-v3.10.2-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -24,6 +24,7 @@ A Helm chart for Kubernetes
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| annotations | object | `{}` | Annotations for the StatefulSet |
 | fullnameOverride | string | `""` |  |
 | httpRoute | object | `{"annotations":{},"cors":{"allowHeaders":"DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,User-Agent,Keep-Alive","allowMethods":"GET, POST, OPTIONS, PUT, DELETE","allowOrigin":"*","enabled":true,"exposeHeaders":"Content-Length,Content-Range","maxAge":1728000},"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"gateway","sectionName":"http"}]}` | Expose the service via gateway-api HTTPRoute Requires Gateway API resources and suitable controller installed within the cluster (see: https://gateway-api.sigs.k8s.io/guides/) |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
@@ -37,6 +38,7 @@ A Helm chart for Kubernetes
 | ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
 | ingress.tls | list | `[]` |  |
+| labels | object | `{}` | Labels for the StatefulSet |
 | livenessProbe.failureThreshold | int | `3` |  |
 | livenessProbe.httpGet.path | string | `"/"` |  |
 | livenessProbe.httpGet.port | string | `"http"` |  |
@@ -54,7 +56,9 @@ A Helm chart for Kubernetes
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | persistence.accessMode | string | `"ReadWriteOnce"` |  |
+| persistence.annotations | object | `{}` | Annotations for the PVC |
 | persistence.enabled | bool | `true` |  |
+| persistence.labels | object | `{}` | Labels for the PVC |
 | persistence.size | string | `"10Gi"` |  |
 | persistence.storageClass | string | `""` |  |
 | podAnnotations | object | `{}` |  |

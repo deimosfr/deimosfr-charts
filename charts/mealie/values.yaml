@@ -5,6 +5,12 @@
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
+# -- Annotations for the StatefulSet
+annotations: {}
+# -- Labels for the StatefulSet
+labels: {}
+
+
 # This sets the update strategy for the StatefulSet.
 updateStrategy:
   type: RollingUpdate
@@ -240,3 +246,7 @@ persistence:
   size: 10Gi
   accessMode: ReadWriteOnce
   storageClass: "" # uses default
+  # -- Annotations for the PVC
+  annotations: {}
+  # -- Labels for the PVC
+  labels: {}
