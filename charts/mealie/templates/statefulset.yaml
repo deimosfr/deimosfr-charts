@@ -94,11 +94,6 @@ spec:
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      labels:
-        {{- include "mealie.labels" . | nindent 8 }}
-        {{- with .Values.persistence.labels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
     spec:
       accessModes:
         - {{ .Values.persistence.accessMode | quote }}
