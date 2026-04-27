@@ -538,6 +538,25 @@ entries:
     version: 2.9.0
   garage:
   - apiVersion: v2
+    appVersion: v2.3.0
+    created: "2026-04-27T06:54:45.632040004Z"
+    description: S3-compatible object store for small self-hosted geo-distributed
+      deployments
+    digest: a2aba06f09101f782cc62f891dccc3d5796fc42356885f05c048a4aa0ce364f7
+    home: https://garagehq.deuxfleurs.fr/
+    icon: https://garagehq.deuxfleurs.fr/images/garage-logo.svg
+    keywords:
+    - geo-distributed
+    - read-after-write-consistency
+    - s3-compatible
+    name: garage
+    sources:
+    - https://git.deuxfleurs.fr/Deuxfleurs/garage.git
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/garage-2.3.0/garage-2.3.0.tgz
+    version: 2.3.0
+  - apiVersion: v2
     appVersion: v2.2.0
     created: "2026-02-06T20:01:43.674091868Z"
     description: S3-compatible object store for small self-hosted geo-distributed
@@ -1017,4 +1036,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/technitium-14.3.0/technitium-14.3.0.tgz
     version: 14.3.0
-generated: "2026-04-27T06:54:15.444395363Z"
+generated: "2026-04-27T06:54:45.632111077Z"
