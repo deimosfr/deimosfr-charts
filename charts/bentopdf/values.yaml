@@ -132,7 +132,7 @@ livenessProbe:
   # -- Enable liveness probe
   enabled: true
   httpGet:
-    path: /healthz
+    path: /
     port: http
   initialDelaySeconds: 30
   periodSeconds: 10
@@ -143,7 +143,7 @@ readinessProbe:
   # -- Enable readiness probe
   enabled: true
   httpGet:
-    path: /readyz
+    path: /
     port: http
   initialDelaySeconds: 10
   periodSeconds: 5
