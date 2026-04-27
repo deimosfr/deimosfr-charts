@@ -94,6 +94,10 @@ spec:
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.persistence.labels }}
+      labels:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       accessModes:
         - {{ .Values.persistence.accessMode | quote }}
