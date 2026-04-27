@@ -2,7 +2,7 @@ apiVersion: v2
 name: mealie
 description: A Helm chart for Kubernetes
 type: application
-version: 1.0.10
+version: 1.0.11
 appVersion: "v3.16.0"
 home: https://mealie.io/
 icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/mealie.png
@@ -19,8 +19,8 @@ keywords:
   - self-hosted
 annotations:
   artifacthub.io/changes: |
-    - kind: added
-      description: Initial chart release
+    - kind: fixed
+      description: Apply persistence.labels to data PVC volumeClaimTemplate
   artifacthub.io/images: |
     - name: mealie
       image: ghcr.io/mealie-recipes/mealie:v3.9.2
