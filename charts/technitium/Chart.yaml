@@ -10,6 +10,6 @@ keywords:
   - adblock
 maintainers:
   - name: gathered-from-compose
-icon: https://technitium.com/img/dns-server-icon.png
+icon: https://technitium.com/img/logo25x25.png
 sources:
   - https://github.com/TechnitiumSoftware/DnsServer
