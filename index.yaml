@@ -562,6 +562,17 @@ entries:
     version: 1.20.0
   ddns-updater:
   - apiVersion: v2
+    appVersion: v2.10.0
+    created: "2026-05-02T13:00:46.014630592Z"
+    description: A Helm chart for qdm12/ddns-updater, a lightweight universal DDNS
+      updater.
+    digest: 542aee97bc5e5e0686500ed13a986c3d6b5cb9510392e51c3ee13d2ab074c7ac
+    name: ddns-updater
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/ddns-updater-2.10.0/ddns-updater-2.10.0.tgz
+    version: 2.10.0
+  - apiVersion: v2
     appVersion: v2.9.0
     created: "2026-02-06T10:07:48.883678248Z"
     description: A Helm chart for qdm12/ddns-updater, a lightweight universal DDNS
@@ -1122,4 +1133,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/technitium-14.3.0/technitium-14.3.0.tgz
     version: 14.3.0
-generated: "2026-04-27T14:16:27.37526947Z"
+generated: "2026-05-02T13:00:46.131921227Z"
