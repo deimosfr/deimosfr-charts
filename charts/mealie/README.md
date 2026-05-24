@@ -1,6 +1,6 @@
 # mealie
 
-![Version: 1.0.4](https://img.shields.io/badge/Version-1.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.10.2](https://img.shields.io/badge/AppVersion-v3.10.2-informational?style=flat-square)
+![Version: 1.0.13](https://img.shields.io/badge/Version-1.0.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.16.0](https://img.shields.io/badge/AppVersion-v3.16.0-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -25,6 +25,8 @@ A Helm chart for Kubernetes
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | annotations | object | `{}` | Annotations for the StatefulSet |
+| extraEnv | list | `[]` |  |
+| extraEnvFrom | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
 | httpRoute | object | `{"annotations":{},"cors":{"allowHeaders":"DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,User-Agent,Keep-Alive","allowMethods":"GET, POST, OPTIONS, PUT, DELETE","allowOrigin":"*","enabled":true,"exposeHeaders":"Content-Length,Content-Range","maxAge":1728000},"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"gateway","sectionName":"http"}]}` | Expose the service via gateway-api HTTPRoute Requires Gateway API resources and suitable controller installed within the cluster (see: https://gateway-api.sigs.k8s.io/guides/) |
 | image.pullPolicy | string | `"IfNotPresent"` |  |

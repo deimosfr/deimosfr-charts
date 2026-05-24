@@ -169,6 +169,21 @@ volumeMounts: []
   #   mountPath: "/etc/foo"
   #   readOnly: true
 
+# Additional env vars on the mealie container (k8s-native list, supports valueFrom).
+extraEnv: []
+  # - name: POSTGRES_PASSWORD
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: my-existing-db-secret
+  #       key: password
+
+# Additional envFrom sources on the mealie container (reference existing Secrets/ConfigMaps).
+extraEnvFrom: []
+  # - secretRef:
+  #     name: my-existing-db-secret
+  # - configMapRef:
+  #     name: my-existing-config
+
 nodeSelector: {}
 
 tolerations: []

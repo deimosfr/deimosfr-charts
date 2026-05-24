@@ -353,6 +353,12 @@
         "volumes": {
             "type": "array"
         },
+        "extraEnv": {
+            "type": "array"
+        },
+        "extraEnvFrom": {
+            "type": "array"
+        },
         "vpa": {
             "type": "object",
             "properties": {
