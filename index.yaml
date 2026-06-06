@@ -750,6 +750,37 @@ entries:
         - name: mealie
           image: ghcr.io/mealie-recipes/mealie:v3.9.2
     apiVersion: v2
+    appVersion: v3.19.2
+    created: "2026-06-06T09:19:02.82275061Z"
+    description: A Helm chart for Kubernetes
+    digest: 03a121a63aeca71a30fd8d830600f57fa796817684fd58386b05844db6aac41a
+    home: https://mealie.io/
+    icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/mealie.png
+    keywords:
+    - mealie
+    - recipe
+    - manager
+    - self-hosted
+    maintainers:
+    - email: deimosfr@gmail.com
+      name: deimosfr
+    name: mealie
+    sources:
+    - https://github.com/mealie-recipes/mealie
+    - https://github.com/deimosfr/deimosfr-charts
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/mealie-1.0.13/mealie-1.0.13.tgz
+    version: 1.0.13
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: Apply persistence.labels to data PVC volumeClaimTemplate
+      artifacthub.io/images: |
+        - name: mealie
+          image: ghcr.io/mealie-recipes/mealie:v3.9.2
+    apiVersion: v2
     appVersion: v3.18.0
     created: "2026-05-24T05:23:39.394811665Z"
     description: A Helm chart for Kubernetes
@@ -1219,4 +1250,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/technitium-14.3.0/technitium-14.3.0.tgz
     version: 14.3.0
-generated: "2026-05-24T05:24:58.554060173Z"
+generated: "2026-06-06T09:19:02.822846355Z"
