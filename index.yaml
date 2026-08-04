@@ -690,6 +690,16 @@ entries:
     version: 1.1.0
   gateway-api-crds:
   - apiVersion: v2
+    appVersion: v1.6.1
+    created: "2026-08-04T12:26:40.394892081Z"
+    description: A Helm chart for Kubernetes
+    digest: c86211c46c113de7f8798429ec483d853af4d86ee24b5bc0747c31a599f18beb
+    name: gateway-api-crds
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/gateway-api-crds-1.6.1/gateway-api-crds-1.6.1.tgz
+    version: 1.6.1
+  - apiVersion: v2
     appVersion: v1.4.1
     created: "2026-02-06T10:07:49.180251581Z"
     description: A Helm chart for Kubernetes
@@ -1250,4 +1260,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/technitium-14.3.0/technitium-14.3.0.tgz
     version: 14.3.0
-generated: "2026-06-06T09:19:02.822846355Z"
+generated: "2026-08-04T12:26:40.394958707Z"
