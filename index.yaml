@@ -16,6 +16,42 @@ entries:
           url: https://github.com/alam00000/bentopdf
     apiVersion: v2
     appVersion: 2.8.8
+    created: "2026-09-27T16:34:48.02279023Z"
+    description: A Helm chart for BentoPDF - PDF manipulation service using BentoML
+    digest: 5217de8af93add6efebc873359e01edd0f866a605d40690fd5f678ea1e200e36
+    home: https://github.com/alam00000/bentopdf
+    icon: https://raw.githubusercontent.com/alam00000/bentopdf/refs/heads/main/public/images/favicon-no-bg.svg
+    keywords:
+    - pdf
+    - bentoml
+    - converter
+    kubeVersion: '>=1.19.0-0'
+    maintainers:
+    - email: deimosfr@gmail.com
+      name: deimosfr
+    name: bentopdf
+    sources:
+    - https://github.com/alam00000/bentopdf
+    - https://github.com/deimosfr/deimosfr-charts/tree/main/charts/bentopdf
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/bentopdf-1.0.20/bentopdf-1.0.20.tgz
+    version: 1.0.20
+  - annotations:
+      artifacthub.io/category: integration-delivery
+      artifacthub.io/changes: |
+        - kind: added
+          description: "First release"
+      artifacthub.io/images: |
+        - name: bentopdf
+          image: bentopdf/bentopdf-simple:latest
+      artifacthub.io/links: |
+        - name: Chart source
+          url: https://github.com/deimosfr/deimosfr-charts/tree/main/charts/bentopdf
+        - name: Docker image source
+          url: https://github.com/alam00000/bentopdf
+    apiVersion: v2
+    appVersion: 2.8.8
     created: "2026-08-31T11:56:58.388315267Z"
     description: A Helm chart for BentoPDF - PDF manipulation service using BentoML
     digest: cd9c541376b3988aff1ee19af21154c2caf20100c3c2b34d6d6d90514213e293
@@ -701,6 +737,28 @@ entries:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/ddns-updater-2.9.0/ddns-updater-2.9.0.tgz
     version: 2.9.0
   garage:
+  - apiVersion: v2
+    appVersion: v2.4.1
+    created: "2026-09-27T16:34:48.227199401Z"
+    description: S3-compatible object store for small self-hosted geo-distributed
+      deployments
+    digest: 6878a251bfa04bd40761849acb0bc8669ad3a648d16486c94340f306d8c2d1d8
+    home: https://garagehq.deuxfleurs.fr/
+    icon: https://garagehq.deuxfleurs.fr/images/garage-logo.svg
+    keywords:
+    - geo-distributed
+    - read-after-write-consistency
+    - s3-compatible
+    maintainers:
+    - email: garagehq@deuxfleurs.fr
+      name: Garage maintainer team
+    name: garage
+    sources:
+    - https://git.deuxfleurs.fr/Deuxfleurs/garage.git
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/garage-2.4.1/garage-2.4.1.tgz
+    version: 2.4.1
   - apiVersion: v2
     appVersion: v2.3.0
     created: "2026-04-27T06:54:45.632040004Z"
@@ -1441,4 +1499,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/technitium-14.3.0/technitium-14.3.0.tgz
     version: 14.3.0
-generated: "2026-09-27T16:34:11.523360496Z"
+generated: "2026-09-27T16:34:48.227314704Z"
