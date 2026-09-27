@@ -2,8 +2,8 @@ apiVersion: v2
 name: technitium
 description: A Helm chart for Technitium DNS Server
 type: application
-version: 15.4.0
-appVersion: "15.4.0"
+version: 15.5.1
+appVersion: "15.5.1"
 keywords:
   - dns
   - technitium
