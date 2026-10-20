@@ -1503,6 +1503,25 @@ entries:
     version: 1.0.2
   technitium:
   - apiVersion: v2
+    appVersion: 15.6.2
+    created: "2026-10-20T03:13:54.304986849Z"
+    description: A Helm chart for Technitium DNS Server
+    digest: 1213734bff3952984b7009700c0b5a53d3a7a89c1b8f5670f27671a77a686e47
+    icon: https://technitium.com/img/logo25x25.png
+    keywords:
+    - dns
+    - technitium
+    - adblock
+    maintainers:
+    - name: gathered-from-compose
+    name: technitium
+    sources:
+    - https://github.com/TechnitiumSoftware/DnsServer
+    type: application
+    urls:
+    - https://github.com/deimosfr/deimosfr-charts/releases/download/technitium-15.6.2/technitium-15.6.2.tgz
+    version: 15.6.2
+  - apiVersion: v2
     appVersion: 15.5.1
     created: "2026-09-27T16:34:11.523208833Z"
     description: A Helm chart for Technitium DNS Server
@@ -1597,4 +1616,4 @@ entries:
     urls:
     - https://github.com/deimosfr/deimosfr-charts/releases/download/technitium-14.3.0/technitium-14.3.0.tgz
     version: 14.3.0
-generated: "2026-10-20T03:13:42.569869071Z"
+generated: "2026-10-20T03:13:54.305042252Z"
