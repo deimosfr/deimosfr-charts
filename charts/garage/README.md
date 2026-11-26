@@ -1,6 +1,6 @@
 # garage
 
-![Version: 0.10.2](https://img.shields.io/badge/Version-0.10.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.4.1](https://img.shields.io/badge/AppVersion-v2.4.1-informational?style=flat-square)
+![Version: 0.10.7](https://img.shields.io/badge/Version-0.10.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.6.0](https://img.shields.io/badge/AppVersion-v2.6.0-informational?style=flat-square)
 
 S3-compatible object store for small self-hosted geo-distributed deployments
 
@@ -33,18 +33,18 @@ S3-compatible object store for small self-hosted geo-distributed deployments
 | fullnameOverride | string | `""` |  |
 | garage.additionalTopLevelConfig | string | `""` | Additional configuration to append to garage.toml. Use a multi-line string for custom config. Example:  additionalTopLevelConfig: |-    data_fsync = true |
 | garage.admin.apiBindAddr | string | `"[::]:3903"` |  |
-| garage.blockSize | string | `"1048576"` | Defaults is 1MB, an increase can result in better performance in certain scenarios https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#block_size |
+| garage.blockSize | string | `"1048576"` | Defaults is 1MB, an increase can result in better performance in certain scenarios. See [here](https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#block_size). |
 | garage.bootstrapPeers | list | `[]` | This is not required if you use the integrated kubernetes discovery |
-| garage.compressionLevel | string | `"1"` | zstd compression level of stored blocks https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#compression_level |
-| garage.consistencyMode | string | `"consistent"` | By default, enable read-after-write consistency guarantees, see the consistency_mode section at https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#consistency_mode |
-| garage.dbEngine | string | `"lmdb"` | Can be changed for better performance on certain systems, use "sqlite" to prioritize durability https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#db_engine |
+| garage.compressionLevel | string | `"1"` | zstd compression level of stored blocks. See [here](https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#compression_level). |
+| garage.consistencyMode | string | `"consistent"` | By default, enable read-after-write consistency guarantees, see the consistency_mode section at See [here](https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#consistency_mode) |
+| garage.dbEngine | string | `"lmdb"` | Can be changed for better performance on certain systems, use "sqlite" to prioritize durability. See [here](https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#db_engine). |
 | garage.existingConfigMap | string | `""` | if not empty string, allow using an existing ConfigMap for the garage.toml, if set, ignores garage.toml |
 | garage.existingRpcSecret | string | `""` | If you want to provide an rpcSecret within an existing k8s secret, specify the secret name here, and store the value under the secret key `rpcSecret` the default secret will not be created |
-| garage.garageTomlString | string | `""` | String Template for the garage configuration if set, ignores above values. Values can be templated, see https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/ |
+| garage.garageTomlString | string | `""` | String Template for the garage configuration if set, ignores above values. Values can be templated, see [the garage reference manual](https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/) |
 | garage.kubernetesSkipCrd | bool | `false` | Set to true if you want to use k8s discovery but install the CRDs manually outside of the helm chart, for example if you operate at namespace level without cluster resources |
-| garage.metadataAutoSnapshotInterval | string | `""` | If this value is set, Garage will automatically take a snapshot of the metadata DB file at a regular interval and save it in the metadata directory. https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#metadata_auto_snapshot_interval |
+| garage.metadataAutoSnapshotInterval | string | `""` | If this value is set, Garage will automatically take a snapshot of the metadata DB file at a regular interval and save it in the metadata directory. [Metadata Snapshot doc](https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#metadata_auto_snapshot_interval). |
 | garage.noClusterRole | bool | `false` | Set to true if you want to use roles instead of cluster roles |
-| garage.replicationFactor | string | `"3"` | Default to 3 replicas, see the replication_factor section at https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#replication_factor |
+| garage.replicationFactor | string | `"3"` | Default to 3 replicas, see [the replication_factor section](https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#replication_factor). |
 | garage.rpcBindAddr | string | `"[::]:3901"` | Port used for node-to-node RPC |
 | garage.rpcSecret | string | `""` | If not given, a random secret will be generated and stored in a Secret object |
 | garage.s3.api.bindAddr | string | `"[::]:3900"` |  |
@@ -97,11 +97,13 @@ S3-compatible object store for small self-hosted geo-distributed deployments
 | podSecurityContext.runAsGroup | int | `1000` |  |
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | podSecurityContext.runAsUser | int | `1000` |  |
-| priorityClassName | string | `""` | Optional priority class name to assign to the pods. See https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/ |
+| priorityClassName | string | `""` | Optional priority class name to assign to the pods. See [the k8s pod-priority doc](https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/) |
 | readinessProbe | object | `{}` | Specifies a readinessProbe |
 | resources | object | `{}` |  |
 | securityContext.capabilities | object | `{"drop":["ALL"]}` | The default security context is heavily restricted, feel free to tune it to your requirements |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
+| service.admin.annotations | object | `{}` | Annotations to add to the admin API service |
+| service.admin.enabled | bool | `false` | Expose admin API internally as a Kubernetes service. NOTE: the admin API is excluded by default as it is not consistent across nodes |
 | service.annotations | object | `{}` | Annotations to add to the service |
 | service.s3.api.port | int | `3900` |  |
 | service.s3.web.port | int | `3902` |  |
@@ -110,6 +112,7 @@ S3-compatible object store for small self-hosted geo-distributed deployments
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | tolerations | list | `[]` |  |
+| topologySpreadConstraints | list | `[]` | Topology spread constraints for the pods, e.g. to place each node in a separate zone. See https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/ |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
